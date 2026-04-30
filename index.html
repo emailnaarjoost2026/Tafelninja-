@@ -1,0 +1,4164 @@
+<!doctype html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
+<!-- v100: slimme reeksen max 2, geen tafel 1, unieke startpunten; welkomsafbeelding met alleen tafelsommen. -->
+<meta name="app-version" content="v103-option-b-simple-home-bottom-nav">
+<title>Tafel Ninja v103</title>
+<meta name="theme-color" content="#5b25b5">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Tafel Ninja">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icon-192.png">
+<style>
+:root{
+  --bg1:#140b2e;--bg2:#5b25b5;--card:#fff;--ink:#24143f;--muted:#65557d;
+  --accent:#7c4dff;--accentDark:#4f27c9;--gold:#ffb703;--good:#11a86b;--bad:#ef476f;--soft:#f0eaff;
+  --bronze:#b87333;--silver:#c0c0c0;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:auto} body{margin:0;font-family:Arial,Helvetica,sans-serif;background:radial-gradient(circle at top,#7c4dff 0,#5b25b5 35%,#140b2e 100%);color:var(--ink);overscroll-behavior-y:contain}
+main{max-width:860px;margin:auto;padding:14px 14px 40px}
+.card{background:rgba(255,255,255,.96);border-radius:26px;padding:20px;margin:14px 0;box-shadow:0 16px 38px rgba(0,0,0,.22)}
+h1,h2,h3{margin-top:0}
+h1{font-size:34px;line-height:1.05}
+label{font-weight:900;display:block;margin-top:8px}
+input,button,select{font-size:19px;padding:13px;border-radius:16px;border:2px solid #ddd;width:100%;margin:6px 0}
+input:focus,select:focus{outline:3px solid #d9ceff;border-color:var(--accent)}
+button{background:linear-gradient(135deg,#8d63ff,#6b40ed);color:white;border:0;font-weight:900;box-shadow:0 5px 0 var(--accentDark);cursor:pointer}
+button:active{transform:translateY(3px);box-shadow:0 2px 0 var(--accentDark)}
+button.light{background:#eee8ff;color:#2b164d;box-shadow:0 5px 0 #c5b5ff}
+button.gold{background:linear-gradient(135deg,#ffd166,#ffb703);color:#3b2600;box-shadow:0 5px 0 #d08d00}
+button.danger{background:#ef476f;box-shadow:0 5px 0 #b51f42}
+button.small{width:auto;padding:10px 14px;margin:4px}
+.hide{display:none!important}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:10px}
+.topbar{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.pill{background:var(--soft);border-radius:999px;padding:10px 12px;font-weight:900;display:inline-block}
+.big{font-size:32px;font-weight:900;line-height:1.28;margin:18px 0}
+.note{color:var(--muted)}
+.feedback{font-size:24px;font-weight:900;min-height:38px;margin-top:12px}
+.good{color:var(--good)}.bad{color:var(--bad)}
+.hero{background:linear-gradient(135deg,#fff,#fff8dc);border:3px solid #ffe080}
+.ninjaWrap{position:relative;top:auto;z-index:3;display:flex;align-items:center;gap:8px;justify-content:flex-end;pointer-events:none;margin-bottom:10px}
+.ninjaBadge{display:flex;align-items:center;gap:8px;background:white;border-radius:999px;padding:7px 13px;font-weight:900;box-shadow:0 8px 20px rgba(0,0,0,.22)}
+.ninja{font-size:42px;animation:float 1.5s infinite ease-in-out}
+.ninja.starter{filter:drop-shadow(0 0 8px white) grayscale(.2) brightness(1.4)}
+.ninja.bronze{filter:drop-shadow(0 0 8px var(--bronze)) sepia(.45)}
+.ninja.zilver{filter:drop-shadow(0 0 8px var(--silver)) grayscale(.4) brightness(1.2)}
+.ninja.goud{filter:drop-shadow(0 0 10px #ffd700) sepia(.7) saturate(1.4)}
+@keyframes float{0%,100%{transform:translateY(0) rotate(-3deg)}50%{transform:translateY(-8px) rotate(3deg)}}
+.progressOuter{height:14px;background:#eee8ff;border-radius:999px;overflow:hidden;flex:1;min-width:120px}
+.progressInner{height:100%;width:0;background:linear-gradient(90deg,#7c4dff,#ffb703);transition:.25s}
+.options{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.option{font-size:30px;background:#fff8df;border:3px solid #ffe08a;border-radius:20px;padding:20px;text-align:center;font-weight:900;cursor:pointer;min-height:82px;box-shadow:0 4px 0 #f5cf73}
+.option:active{transform:translateY(2px);box-shadow:0 2px 0 #f5cf73}
+.shop{background:linear-gradient(135deg,#fff8dc,#ffffff);border:3px solid #ffe080}
+.teacherRow{display:grid;grid-template-columns:120px 1fr;gap:8px}
+.session{background:#f8f4ff;border:2px solid #e2d8ff;border-radius:18px;padding:13px;margin:8px 0;font-weight:800}
+.statusRow{display:grid;grid-template-columns:54px 1fr;gap:10px;align-items:center}
+.ruleBlock{background:#fff;border:3px solid #e2d8ff;border-radius:20px;padding:16px;margin:10px 0;font-weight:900;line-height:1.35}
+.ruleBlock.goal{border-color:#ffe080;background:#fff8dc}
+.ruleBlock.good{border-color:#9de7bd;background:#eafff3}
+.ruleBlock.bad{border-color:#ffb3c1;background:#fff0f3}
+.statusIcon{font-size:38px;text-align:center}
+.topBack{background:#eee8ff;color:#2b164d;box-shadow:0 4px 0 #c5b5ff;width:auto;padding:10px 16px;margin-bottom:10px}
+.playerCard{background:#fff;border:3px solid #e2d8ff;border-radius:20px;padding:14px;text-align:center;font-weight:900;cursor:pointer;color:var(--ink);box-shadow:0 5px 0 #d8caff;min-height:118px}
+.playerAvatar{font-size:48px;margin-bottom:6px}.playerName{font-size:22px;color:var(--ink)}.playerStatusBadge{margin-top:8px;display:inline-block;background:#f0eaff;border-radius:999px;padding:7px 12px;font-size:16px;color:var(--ink);font-weight:900}
+.pinDots{letter-spacing:8px;font-size:28px;font-weight:900;text-align:center;background:#f8f4ff}
+.shake{animation:shake .28s}.pop{animation:pop .35s}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-8px)}75%{transform:translateX(8px)}}
+@keyframes pop{0%{transform:scale(.9)}70%{transform:scale(1.07)}100%{transform:scale(1)}}
+.confetti{position:fixed;inset:0;pointer-events:none;font-size:32px;overflow:hidden;z-index:10}
+.confetti span{position:absolute;animation:fall 1.4s linear forwards}
+@keyframes fall{from{transform:translateY(-40px) rotate(0)}to{transform:translateY(110vh) rotate(360deg)}}
+.encourage,.modal{position:fixed;inset:0;background:rgba(20,11,46,.76);display:flex;align-items:center;justify-content:center;z-index:20;padding:20px}
+.encourageCard,.modalCard{background:white;border-radius:30px;padding:28px;text-align:center;max-width:450px;width:100%;box-shadow:0 20px 50px rgba(0,0,0,.35);animation:pop .35s}
+.encourageNinja{font-size:64px}
+.encourageCard h1{font-size:34px;margin:10px 0;color:#24143f}
+.encourageCard p{font-size:22px;font-weight:800;color:#5b4d75;line-height:1.35}
+@media(max-width:520px){h1{font-size:30px}.big{font-size:29px}.option{font-size:27px;padding:18px}.card{padding:18px;border-radius:22px}}
+
+.playerActions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:12px 0}
+.playerListBox{max-height:56vh;overflow-y:auto;padding:4px 2px 90px;-webkit-overflow-scrolling:touch;overscroll-behavior:contain}
+.playerListBox .grid{padding-bottom:20px}
+
+
+
+/* v54 slimme verbindingsstatus */
+#cloudStatus{
+  display:none!important;
+}
+
+#statusDot{
+  width:12px!important;
+  height:12px!important;
+  border-radius:50%!important;
+  background:#f39c12!important;
+  transition:all .3s ease!important;
+  box-shadow:0 0 8px rgba(0,0,0,.30)!important;
+}
+
+#statusDot.online{
+  background:#2ecc71!important;
+  box-shadow:0 0 8px #2ecc71,0 0 16px #2ecc71!important;
+}
+
+#statusDot.offline{
+  background:#e74c3c!important;
+  box-shadow:0 0 8px #e74c3c,0 0 16px #e74c3c!important;
+}
+
+#statusDot.connecting{
+  background:#f39c12!important;
+  animation:pulseDot 1.2s infinite!important;
+}
+
+#statusDot.reconnect{
+  animation:flashGreen .6s ease!important;
+}
+
+@keyframes pulseDot{
+  0%{box-shadow:0 0 0 0 rgba(243,156,18,.6)}
+  70%{box-shadow:0 0 0 8px rgba(243,156,18,0)}
+  100%{box-shadow:0 0 0 0 rgba(243,156,18,0)}
+}
+
+@keyframes flashGreen{
+  0%{transform:scale(1)}
+  50%{transform:scale(1.55)}
+  100%{transform:scale(1)}
+}
+
+/* ninja rechtsboven strak houden */
+.ninjaBadge{
+  background:transparent!important;
+  box-shadow:none!important;
+  border-radius:0!important;
+  padding:0!important;
+  color:white!important;
+  text-shadow:0 2px 10px rgba(0,0,0,.35)!important;
+}
+.ninjaBadge #rankLabel{
+  color:white!important;
+  font-weight:900!important;
+}
+#ninja{
+  filter:drop-shadow(0 6px 12px rgba(0,0,0,.22))!important;
+}
+#game .topBack{
+  display:none!important;
+}
+
+
+/* ===== v55 consistente app-stijl ===== */
+:root{
+  --radiusXL:34px;
+  --radiusL:24px;
+  --shadowSoft:0 18px 45px rgba(22,10,54,.22);
+  --line:#eadfff;
+}
+
+body{
+  background:
+    radial-gradient(circle at 30% 0%, #8b63ff 0, #5b25b5 38%, #160b35 100%)!important;
+}
+
+main{
+  padding:18px 16px 56px!important;
+}
+
+.card{
+  border-radius:var(--radiusXL)!important;
+  padding:24px!important;
+  box-shadow:var(--shadowSoft)!important;
+}
+
+.hero,.shop{
+  background:linear-gradient(145deg,#fffdf2,#fffef9)!important;
+  border:3px solid #ffe480!important;
+}
+
+h1{
+  letter-spacing:-.04em;
+}
+
+h2{
+  letter-spacing:-.035em;
+}
+
+.note{
+  font-size:18px;
+  line-height:1.45;
+}
+
+button{
+  border-radius:22px!important;
+  min-height:58px;
+}
+
+.playerActions{
+  gap:14px!important;
+  margin:24px 0 16px!important;
+}
+
+.pill{
+  background:#f1eaff!important;
+  border-radius:999px!important;
+  padding:12px 16px!important;
+}
+
+.topBack{
+  margin:0 0 22px!important;
+  border-radius:22px!important;
+  width:auto!important;
+  padding:12px 20px!important;
+}
+
+.ninjaWrap{
+  display:grid!important;
+  grid-template-columns:1fr auto!important;
+  gap:14px!important;
+  align-items:center!important;
+  margin:12px 0 26px!important;
+}
+
+.progressOuter{
+  height:16px!important;
+  background:#efe8ff!important;
+}
+
+.progressInner{
+  background:linear-gradient(90deg,#2ecc71,#ffb703)!important;
+}
+
+.ninjaBadge{
+  background:transparent!important;
+  box-shadow:none!important;
+  padding:0!important;
+  color:white!important;
+  text-shadow:0 2px 10px rgba(0,0,0,.35)!important;
+  gap:10px!important;
+}
+
+#rankLabel{
+  color:white!important;
+  font-size:22px!important;
+  font-weight:900!important;
+}
+
+#ninja{
+  filter:drop-shadow(0 6px 12px rgba(0,0,0,.25))!important;
+}
+
+#cloudStatus{display:none!important;}
+
+#game .topBack{display:none!important;}
+
+#game.card{
+  padding-top:28px!important;
+}
+
+#game .topbar{
+  display:grid!important;
+  grid-template-columns:repeat(3,1fr)!important;
+  gap:12px!important;
+  margin-bottom:30px!important;
+}
+
+#game .topbar .pill{
+  text-align:center;
+  font-size:17px;
+  padding:12px 10px!important;
+}
+
+#titel{
+  font-size:34px;
+  margin-bottom:20px;
+}
+
+#vraag{
+  font-size:42px!important;
+  line-height:1.15!important;
+  margin:18px 0 26px!important;
+}
+
+.options{
+  gap:16px!important;
+}
+
+.option{
+  border-radius:24px!important;
+  min-height:92px!important;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:#fff9df!important;
+  border:3px solid #ffe480!important;
+  box-shadow:0 6px 0 #f5cf73!important;
+}
+
+#end .grid{
+  grid-template-columns:1fr!important;
+  gap:12px!important;
+}
+
+#end .pill{
+  display:flex!important;
+  justify-content:space-between!important;
+  align-items:center!important;
+  font-size:20px!important;
+}
+
+/* Rules page */
+.rulesNew{
+  background:rgba(255,255,255,.94)!important;
+}
+
+.rulesHero{
+  display:flex;
+  align-items:center;
+  gap:18px;
+  background:linear-gradient(135deg,#6b40ed,#4f27c9);
+  border-radius:30px;
+  padding:24px;
+  color:white;
+  margin-bottom:18px;
+  box-shadow:0 12px 28px rgba(79,39,201,.28);
+}
+
+.rulesHeroNinja{
+  font-size:70px;
+  filter:drop-shadow(0 8px 16px rgba(0,0,0,.25));
+}
+
+.eyebrow{
+  margin:0 0 4px;
+  font-weight:900;
+  opacity:.85;
+  text-transform:uppercase;
+  letter-spacing:.06em;
+  font-size:13px;
+}
+
+.rulesHero h1{
+  margin:0;
+  font-size:36px;
+  color:white;
+}
+
+.rulesHero h1 span{
+  color:#ffd166;
+  text-transform:uppercase;
+}
+
+.rulesStack{
+  display:flex;
+  flex-direction:column;
+  gap:14px;
+}
+
+.rulesBlock{
+  border-radius:26px!important;
+  padding:18px!important;
+  margin:0!important;
+}
+
+.rulesBlock.step{
+  display:grid;
+  grid-template-columns:50px 1fr auto;
+  gap:16px;
+  align-items:center;
+  background:white!important;
+  border:2px solid var(--line);
+}
+
+.rulesBlock.step.gold{
+  background:#fff8dc!important;
+  border:3px solid #ffe480!important;
+  grid-template-columns:50px 1fr;
+}
+
+.stepNr{
+  width:50px;
+  height:50px;
+  border-radius:50%;
+  background:linear-gradient(135deg,#7c4dff,#4f27c9);
+  color:white;
+  display:grid;
+  place-items:center;
+  font-weight:900;
+  font-size:24px;
+}
+
+.rulesBlock.gold .stepNr{
+  background:linear-gradient(135deg,#ffd166,#ffb703);
+  color:#3b2600;
+}
+
+.stepText h3{
+  margin:0 0 6px;
+  font-size:24px;
+}
+
+.stepText p,.stepText li{
+  font-size:17px;
+  line-height:1.35;
+  margin:0;
+}
+
+.stepText ul{
+  margin:8px 0 0;
+  padding-left:20px;
+}
+
+.stepBadge{
+  background:#6b40ed;
+  color:white;
+  padding:10px 14px;
+  border-radius:14px;
+  font-weight:900;
+  transform:rotate(-2deg);
+}
+
+.rulesBlock.success{
+  display:grid;
+  grid-template-columns:58px 1fr;
+  align-items:center;
+  gap:14px;
+  background:#eafff3!important;
+  border:3px solid #9de7bd!important;
+  color:#118a5b;
+  font-size:20px;
+  line-height:1.25;
+}
+
+.bigIcon{
+  font-size:42px;
+}
+
+.rulesBlock.result{
+  background:white!important;
+  border:2px solid var(--line)!important;
+  display:grid;
+  gap:12px;
+}
+
+.resultRow{
+  display:grid;
+  grid-template-columns:52px 1fr;
+  gap:14px;
+  align-items:center;
+  padding:12px 0;
+}
+
+.resultRow + .resultRow{
+  border-top:2px solid #f2ecff;
+}
+
+.resultIcon{
+  width:46px;
+  height:46px;
+  border-radius:16px;
+  display:grid;
+  place-items:center;
+  color:white;
+  font-weight:900;
+  font-size:28px;
+}
+
+.failIcon{background:#ef476f;}
+.winIcon{background:#11a86b;}
+
+.resultRow b{
+  font-size:22px;
+}
+.resultRow span{
+  font-size:17px;
+}
+
+.sectionTitle{
+  margin:28px 0 14px!important;
+  font-size:34px!important;
+}
+
+.statusGrid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:14px;
+}
+
+.statusCard{
+  background:linear-gradient(145deg,#fff,#f8f4ff);
+  border-radius:24px;
+  padding:18px 12px;
+  text-align:center;
+  box-shadow:0 10px 22px rgba(22,10,54,.12);
+  border:2px solid var(--line);
+}
+
+.statusIconBig{
+  font-size:44px;
+  margin-bottom:8px;
+}
+
+.statusCard b{
+  display:block;
+  font-size:19px;
+}
+
+.statusCard span{
+  display:block;
+  color:var(--muted);
+  font-size:14px;
+  margin-top:4px;
+}
+
+.statusCard.starter{border-color:#b995ff}
+.statusCard.bronze{border-color:#b87333}
+.statusCard.silver{border-color:#c0c0c0}
+.statusCard.gold{border-color:#ffd166;background:linear-gradient(145deg,#fff8dc,#fff)}
+
+.rewardBar{
+  margin-top:16px;
+  background:#1b103f;
+  color:white;
+  border-radius:24px;
+  padding:16px;
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:10px;
+  text-align:center;
+  box-shadow:0 12px 28px rgba(22,10,54,.24);
+}
+
+.rewardBar div{
+  display:flex;
+  flex-direction:column;
+  gap:4px;
+}
+
+.rewardBar span{
+  opacity:.85;
+  font-size:13px;
+}
+
+.tableSessions{display:flex;flex-direction:column;gap:8px;margin-top:8px}.tableSession{background:#f8f4ff;border:2px solid #eadfff;border-radius:16px;padding:10px 12px;display:grid;gap:4px}.tableSession b{font-size:15px}.tableSession span{color:var(--ink);font-size:15px}
+/* Mission rows */
+.missionRows{
+  display:flex;
+  flex-direction:column;
+  gap:0;
+}
+
+.missionRow{
+  display:grid;
+  grid-template-columns:34px 1fr auto;
+  gap:12px;
+  align-items:center;
+  padding:14px 0;
+  font-size:18px;
+  border-bottom:2px solid rgba(36,20,63,.08);
+}
+
+.missionRow:last-child{
+  border-bottom:0;
+}
+
+.missionRow b{
+  font-size:19px;
+}
+
+.statusLine{
+  grid-template-columns:1fr auto;
+  font-weight:900;
+}
+
+.checkBox{
+  width:28px;
+  height:28px;
+  border-radius:8px;
+  background:#ddd;
+  display:grid;
+  place-items:center;
+  color:white;
+  font-weight:900;
+  font-size:20px;
+}
+
+.checkBox.done{
+  background:#11a86b;
+  box-shadow:0 4px 10px rgba(17,168,107,.25);
+}
+
+.statusHeroBadge{
+  display:flex;
+  align-items:center;
+  gap:18px;
+}
+
+.statusHeroIcon{
+  font-size:56px;
+}
+
+.statusHeroBadge h2{
+  margin:0 0 8px;
+}
+
+.statusHeroBadge p{
+  margin:0;
+  color:var(--muted);
+  font-size:17px;
+}
+
+.tableCard{
+  background:#fff;
+  border:2px solid var(--line);
+  border-radius:24px;
+  padding:18px;
+  margin:12px 0;
+  display:grid;
+  gap:10px;
+  box-shadow:0 8px 20px rgba(22,10,54,.08);
+}
+
+.tableCard b{
+  display:block;
+  font-size:22px;
+}
+
+.tableCard span,.tableCard small{
+  color:var(--muted);
+  font-size:16px;
+}
+
+.tableScore{
+  font-weight:900;
+  background:#f1eaff;
+  border-radius:999px;
+  padding:8px 12px;
+  width:max-content;
+}
+
+.cleanSession{
+  background:white!important;
+  border:2px solid var(--line)!important;
+}
+
+@media(max-width:520px){
+  main{padding:14px 14px 44px!important}
+  .card{padding:20px!important;border-radius:28px!important}
+  .rulesHero{padding:18px;gap:12px}
+  .rulesHeroNinja{font-size:54px}
+  .rulesHero h1{font-size:30px}
+  .rulesBlock.step{grid-template-columns:44px 1fr}
+  .stepBadge{grid-column:2}
+  .statusGrid{grid-template-columns:1fr 1fr}
+  .rewardBar{grid-template-columns:1fr;gap:8px}
+  #game .topbar{grid-template-columns:repeat(2,1fr)!important}
+}
+
+
+/* ===== v56 DEFINITIEVE SPELUITLEG-DESIGN OVERRIDES ===== */
+#rules.rulesNew{
+  background:linear-gradient(180deg,#2b1168 0%,#160b35 100%)!important;
+  color:white!important;
+  border:0!important;
+  box-shadow:none!important;
+  padding:22px!important;
+  overflow:hidden!important;
+}
+
+#rules .topBack{
+  background:#eee8ff!important;
+  color:#24143f!important;
+  box-shadow:0 5px 0 #c5b5ff!important;
+  margin-bottom:18px!important;
+}
+
+.rulesHero{
+  display:grid!important;
+  grid-template-columns:112px 1fr!important;
+  align-items:center!important;
+  gap:18px!important;
+  background:
+    radial-gradient(circle at 15% 50%, rgba(255,209,102,.32), transparent 38%),
+    linear-gradient(135deg,#7c4dff,#4f27c9)!important;
+  border-radius:30px!important;
+  padding:22px!important;
+  color:white!important;
+  margin:0 0 16px!important;
+  box-shadow:0 16px 38px rgba(0,0,0,.24)!important;
+}
+
+.rulesHeroArt{
+  font-size:86px!important;
+  line-height:1!important;
+  filter:drop-shadow(0 10px 18px rgba(0,0,0,.32))!important;
+  text-align:center!important;
+}
+
+.rulesHeroText .eyebrow{
+  font-size:13px!important;
+  text-transform:uppercase!important;
+  letter-spacing:.08em!important;
+  font-weight:900!important;
+  opacity:.86!important;
+  margin-bottom:4px!important;
+}
+
+.rulesHero h1{
+  color:white!important;
+  margin:0!important;
+  font-size:38px!important;
+  line-height:1.02!important;
+  letter-spacing:-.05em!important;
+}
+
+.rulesHero h1 span{
+  color:#ffd166!important;
+  text-transform:uppercase!important;
+  text-shadow:0 3px 0 rgba(0,0,0,.18)!important;
+}
+
+.rulesHero p{
+  margin:10px 0 0!important;
+  font-size:16px!important;
+  line-height:1.3!important;
+  opacity:.92!important;
+}
+
+.rulesCards{
+  display:flex!important;
+  flex-direction:column!important;
+  gap:12px!important;
+}
+
+.ruleCard{
+  display:grid!important;
+  grid-template-columns:54px 1fr auto!important;
+  gap:14px!important;
+  align-items:center!important;
+  border-radius:24px!important;
+  padding:16px!important;
+  color:#24143f!important;
+  box-shadow:0 10px 26px rgba(0,0,0,.16)!important;
+  border:0!important;
+}
+
+.ruleCard h2{
+  margin:0 0 6px!important;
+  font-size:24px!important;
+  line-height:1.1!important;
+}
+
+.ruleCard p{
+  margin:6px 0!important;
+  font-size:16px!important;
+  line-height:1.32!important;
+}
+
+.whiteCard{
+  background:white!important;
+}
+
+.yellowCard{
+  background:linear-gradient(135deg,#fff8dc,#fffef5)!important;
+  border:3px solid #ffe480!important;
+}
+
+.greenCard{
+  background:linear-gradient(135deg,#eafff3,#f7fff9)!important;
+  border:3px solid #9de7bd!important;
+  grid-template-columns:58px 1fr 54px!important;
+}
+
+.resultCard{
+  background:white!important;
+  grid-template-columns:1fr!important;
+  gap:0!important;
+  padding:0!important;
+  overflow:hidden!important;
+}
+
+.ruleNumber{
+  width:48px!important;
+  height:48px!important;
+  border-radius:50%!important;
+  display:grid!important;
+  place-items:center!important;
+  color:white!important;
+  font-size:24px!important;
+  font-weight:900!important;
+  box-shadow:inset 0 -4px 0 rgba(0,0,0,.16)!important;
+}
+
+.ruleNumber.purple{background:linear-gradient(135deg,#8d63ff,#4f27c9)!important;}
+.ruleNumber.yellow{background:linear-gradient(135deg,#ffd166,#ffb703)!important;color:#3b2600!important;}
+
+.miniBadge{
+  background:#6b40ed!important;
+  color:white!important;
+  padding:9px 12px!important;
+  border-radius:13px!important;
+  font-size:15px!important;
+  font-weight:900!important;
+  transform:rotate(-2deg)!important;
+}
+
+.bigSideIcon{
+  font-size:48px!important;
+}
+
+.shield{
+  width:48px!important;
+  height:48px!important;
+  border-radius:16px!important;
+  background:#11a86b!important;
+  color:white!important;
+  display:grid!important;
+  place-items:center!important;
+  font-weight:900!important;
+  font-size:30px!important;
+}
+
+.resultLine{
+  display:grid!important;
+  grid-template-columns:58px 1fr!important;
+  align-items:center!important;
+  gap:14px!important;
+  padding:16px!important;
+}
+
+.resultLine + .resultLine{
+  border-top:2px solid #f1eaff!important;
+}
+
+.resultLine h2{
+  margin:0 0 4px!important;
+}
+
+.resultLine p{
+  margin:0!important;
+}
+
+.resultSymbol{
+  width:46px!important;
+  height:46px!important;
+  border-radius:16px!important;
+  color:white!important;
+  display:grid!important;
+  place-items:center!important;
+  font-size:30px!important;
+  font-weight:900!important;
+}
+
+.badLine .resultSymbol{background:#ef476f!important;}
+.goodLine .resultSymbol{background:#11a86b!important;}
+
+.badLine h2{color:#24143f!important;}
+.goodLine h2{color:#24143f!important;}
+
+.rulesSectionTitle{
+  color:white!important;
+  font-size:34px!important;
+  margin:24px 0 14px!important;
+}
+
+.statusGridNew{
+  display:grid!important;
+  grid-template-columns:repeat(2,1fr)!important;
+  gap:12px!important;
+}
+
+.statusTile{
+  border-radius:22px!important;
+  padding:16px 10px!important;
+  text-align:center!important;
+  color:white!important;
+  background:rgba(255,255,255,.09)!important;
+  border:2px solid rgba(255,255,255,.18)!important;
+  box-shadow:0 10px 24px rgba(0,0,0,.18)!important;
+}
+
+.statusTile b{
+  display:block!important;
+  font-size:18px!important;
+  margin-top:8px!important;
+}
+
+.statusTile span{
+  display:block!important;
+  font-size:13px!important;
+  opacity:.9!important;
+  margin-top:5px!important;
+}
+
+.statusAvatar{
+  font-size:42px!important;
+}
+
+.starterTile{border-color:#b995ff!important;}
+.bronzeTile{border-color:#b87333!important;}
+.silverTile{border-color:#c0c0c0!important;}
+.goldTile{border-color:#ffd166!important;background:linear-gradient(135deg,rgba(255,209,102,.24),rgba(255,255,255,.08))!important;}
+
+.rewardStrip{
+  margin-top:14px!important;
+  background:#12082e!important;
+  border:2px solid rgba(255,255,255,.12)!important;
+  border-radius:24px!important;
+  padding:14px!important;
+  display:grid!important;
+  grid-template-columns:repeat(3,1fr)!important;
+  gap:8px!important;
+  text-align:center!important;
+  color:white!important;
+}
+
+.rewardStrip div{
+  display:flex!important;
+  flex-direction:column!important;
+  gap:4px!important;
+}
+
+.rewardStrip b{
+  font-size:15px!important;
+}
+
+.rewardStrip span{
+  font-size:12px!important;
+  opacity:.8!important;
+}
+
+@media(max-width:520px){
+  #rules.rulesNew{
+    padding:18px!important;
+  }
+  .rulesHero{
+    grid-template-columns:78px 1fr!important;
+    padding:18px!important;
+  }
+  .rulesHeroArt{
+    font-size:64px!important;
+  }
+  .rulesHero h1{
+    font-size:30px!important;
+  }
+  .ruleCard{
+    grid-template-columns:48px 1fr!important;
+  }
+  .miniBadge,.bigSideIcon,.shield{
+    grid-column:2!important;
+    justify-self:start!important;
+  }
+  .greenCard{
+    grid-template-columns:48px 1fr!important;
+  }
+  .statusGridNew{
+    grid-template-columns:1fr 1fr!important;
+  }
+  .rewardStrip{
+    grid-template-columns:1fr!important;
+  }
+}
+
+/* v56 cache-test: als je dit ziet, is v56 geladen */
+
+
+/* ===== v57 countdown timer + bar ===== */
+.timerBarOuter{
+  width:100%!important;
+  height:16px!important;
+  background:#eee8ff!important;
+  border-radius:999px!important;
+  overflow:hidden!important;
+  margin:2px 0 26px!important;
+  box-shadow:inset 0 2px 5px rgba(0,0,0,.10)!important;
+}
+
+.timerBarInner{
+  height:100%!important;
+  width:100%;
+  background:linear-gradient(90deg,#2ecc71,#ffb703)!important;
+  transition:width .25s linear, background .25s linear!important;
+}
+
+.timerBarInner.warning{
+  background:#ef476f!important;
+  animation:pulseTime .9s infinite!important;
+}
+
+.timeWarning{
+  color:#ff3b3b!important;
+  animation:pulseTime .9s infinite!important;
+  font-weight:900!important;
+}
+
+@keyframes pulseTime{
+  0%{transform:scale(1)}
+  50%{transform:scale(1.22)}
+  100%{transform:scale(1)}
+}
+
+
+
+/* ===== v58 herstel: speluitleg rustig, strak en niet samengedrukt ===== */
+#rules.rulesNew{
+  background:rgba(255,255,255,.96)!important;
+  color:var(--ink)!important;
+  border:0!important;
+  border-radius:34px!important;
+  box-shadow:0 18px 45px rgba(22,10,54,.22)!important;
+  padding:22px!important;
+  overflow:visible!important;
+}
+
+#rules .topBack{
+  background:#eee8ff!important;
+  color:#24143f!important;
+  box-shadow:0 5px 0 #c5b5ff!important;
+  margin:0 0 18px!important;
+}
+
+#rules .rulesHero{
+  display:grid!important;
+  grid-template-columns:74px minmax(0,1fr)!important;
+  align-items:center!important;
+  gap:16px!important;
+  background:linear-gradient(135deg,#7c4dff,#4f27c9)!important;
+  border-radius:28px!important;
+  padding:20px!important;
+  color:white!important;
+  margin:0 0 18px!important;
+  box-shadow:0 14px 32px rgba(79,39,201,.28)!important;
+}
+
+#rules .rulesHeroArt{
+  font-size:58px!important;
+  line-height:1!important;
+  text-align:center!important;
+  filter:drop-shadow(0 8px 16px rgba(0,0,0,.28))!important;
+}
+
+#rules .rulesHero h1{
+  margin:0!important;
+  color:white!important;
+  font-size:30px!important;
+  line-height:1.05!important;
+  letter-spacing:-.04em!important;
+}
+
+#rules .rulesHero h1 span{
+  color:#ffd166!important;
+  text-transform:uppercase!important;
+  text-shadow:none!important;
+}
+
+#rules .rulesHero p{
+  margin:8px 0 0!important;
+  font-size:16px!important;
+  line-height:1.35!important;
+  opacity:.96!important;
+}
+
+#rules .eyebrow{
+  color:white!important;
+  opacity:.82!important;
+  margin:0 0 4px!important;
+}
+
+#rules .rulesCards{
+  display:flex!important;
+  flex-direction:column!important;
+  gap:14px!important;
+}
+
+#rules .ruleCard{
+  width:100%!important;
+  color:#24143f!important;
+  border-radius:26px!important;
+  padding:18px!important;
+  box-shadow:0 10px 24px rgba(22,10,54,.10)!important;
+  overflow:hidden!important;
+}
+
+#rules .ruleCard.whiteCard,
+#rules .ruleCard.yellowCard,
+#rules .ruleCard.greenCard{
+  display:grid!important;
+  grid-template-columns:52px minmax(0,1fr)!important;
+  gap:14px!important;
+  align-items:start!important;
+}
+
+#rules .ruleCard.whiteCard{
+  background:white!important;
+  border:2px solid #eadfff!important;
+}
+
+#rules .ruleCard.yellowCard{
+  background:linear-gradient(135deg,#fff8dc,#fffef5)!important;
+  border:3px solid #ffe480!important;
+}
+
+#rules .ruleCard.greenCard{
+  background:linear-gradient(135deg,#eafff3,#f7fff9)!important;
+  border:3px solid #9de7bd!important;
+}
+
+#rules .ruleCard h2{
+  margin:0 0 8px!important;
+  font-size:25px!important;
+  line-height:1.1!important;
+  color:#24143f!important;
+}
+
+#rules .ruleCard p{
+  margin:6px 0!important;
+  font-size:17px!important;
+  line-height:1.38!important;
+  color:#24143f!important;
+}
+
+#rules .ruleNumber{
+  width:48px!important;
+  height:48px!important;
+  border-radius:50%!important;
+  display:grid!important;
+  place-items:center!important;
+  font-weight:900!important;
+  font-size:23px!important;
+  box-shadow:inset 0 -4px 0 rgba(0,0,0,.14)!important;
+}
+
+#rules .miniBadge,
+#rules .bigSideIcon,
+#rules .shield{
+  grid-column:2!important;
+  justify-self:start!important;
+  align-self:start!important;
+  margin-top:8px!important;
+}
+
+#rules .miniBadge{
+  transform:none!important;
+  background:#6b40ed!important;
+  color:white!important;
+  border-radius:14px!important;
+  padding:9px 14px!important;
+  font-size:16px!important;
+}
+
+#rules .bigSideIcon{
+  font-size:38px!important;
+}
+
+#rules .shield{
+  width:46px!important;
+  height:46px!important;
+  border-radius:16px!important;
+  background:#11a86b!important;
+  color:white!important;
+  display:grid!important;
+  place-items:center!important;
+  font-size:28px!important;
+  font-weight:900!important;
+}
+
+#rules .resultCard{
+  display:block!important;
+  background:white!important;
+  border:2px solid #eadfff!important;
+  padding:0!important;
+}
+
+#rules .resultLine{
+  display:grid!important;
+  grid-template-columns:52px minmax(0,1fr)!important;
+  gap:14px!important;
+  align-items:center!important;
+  padding:16px 18px!important;
+}
+
+#rules .resultLine + .resultLine{
+  border-top:2px solid #f1eaff!important;
+}
+
+#rules .resultLine h2{
+  margin:0 0 4px!important;
+  font-size:23px!important;
+  color:#24143f!important;
+}
+
+#rules .resultLine p{
+  margin:0!important;
+  font-size:17px!important;
+  line-height:1.35!important;
+  color:#24143f!important;
+}
+
+#rules .rulesSectionTitle{
+  color:#24143f!important;
+  font-size:34px!important;
+  margin:26px 0 14px!important;
+}
+
+#rules .statusGridNew{
+  display:grid!important;
+  grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  gap:12px!important;
+}
+
+#rules .statusTile{
+  background:linear-gradient(145deg,#fff,#f8f4ff)!important;
+  color:#24143f!important;
+  border:2px solid #eadfff!important;
+  border-radius:22px!important;
+  padding:15px 10px!important;
+  text-align:center!important;
+  box-shadow:0 8px 18px rgba(22,10,54,.08)!important;
+}
+
+#rules .statusTile span{
+  color:#65557d!important;
+  opacity:1!important;
+}
+
+#rules .rewardStrip{
+  margin-top:14px!important;
+  background:#1b103f!important;
+  border-radius:22px!important;
+  padding:14px!important;
+  display:grid!important;
+  grid-template-columns:repeat(3,1fr)!important;
+  gap:8px!important;
+  color:white!important;
+}
+
+@media(max-width:520px){
+  #rules.rulesNew{padding:18px!important;border-radius:30px!important;}
+  #rules .rulesHero{grid-template-columns:64px minmax(0,1fr)!important;padding:16px!important;}
+  #rules .rulesHeroArt{font-size:52px!important;}
+  #rules .rulesHero h1{font-size:28px!important;}
+  #rules .rulesHero p{font-size:15px!important;}
+  #rules .ruleCard.whiteCard,
+  #rules .ruleCard.yellowCard,
+  #rules .ruleCard.greenCard{grid-template-columns:48px minmax(0,1fr)!important;}
+  #rules .ruleCard h2{font-size:23px!important;}
+  #rules .ruleCard p{font-size:16px!important;}
+  #rules .statusGridNew{grid-template-columns:repeat(2,minmax(0,1fr))!important;}
+  #rules .rewardStrip{grid-template-columns:1fr!important;}
+}
+
+/* v58: countdownbar net onder de statistieken */
+#game .timerBarOuter{
+  grid-column:1 / -1!important;
+  order:10!important;
+  margin:0 0 10px!important;
+}
+
+
+
+/* ===== v60 fix: weekdoel/resultaat kaarten niet samendrukken ===== */
+#rules .ruleCard.greenCard{display:grid!important;grid-template-columns:58px minmax(0,1fr) 58px!important;gap:14px!important;align-items:center!important;min-height:auto!important;padding:18px!important;overflow:visible!important;}
+#rules .ruleCard.greenCard .bigSideIcon{grid-column:1!important;grid-row:1!important;justify-self:center!important;align-self:center!important;margin:0!important;font-size:42px!important;line-height:1!important;}
+#rules .ruleCard.greenCard > div:not(.bigSideIcon):not(.shield){grid-column:2!important;grid-row:1!important;min-width:0!important;}
+#rules .ruleCard.greenCard h2{margin:0 0 8px!important;font-size:24px!important;line-height:1.1!important;}
+#rules .ruleCard.greenCard p{margin:0!important;font-size:17px!important;line-height:1.38!important;max-width:100%!important;}
+#rules .ruleCard.greenCard .shield{grid-column:3!important;grid-row:1!important;justify-self:center!important;align-self:center!important;margin:0!important;width:52px!important;height:52px!important;border-radius:18px!important;}
+#rules .resultCard{overflow:hidden!important;}
+#rules .resultLine{grid-template-columns:54px minmax(0,1fr)!important;align-items:center!important;}
+#rules .resultSymbol{width:48px!important;height:48px!important;border-radius:16px!important;display:grid!important;place-items:center!important;font-size:30px!important;font-weight:900!important;color:white!important;line-height:1!important;}
+#rules .badLine .resultSymbol{background:#ef476f!important;}
+#rules .goodLine .resultSymbol{background:#11a86b!important;}
+@media(max-width:520px){#rules .ruleCard.greenCard{grid-template-columns:48px minmax(0,1fr)!important;align-items:start!important;}#rules .ruleCard.greenCard .bigSideIcon{grid-column:1!important;grid-row:1!important;font-size:36px!important;margin-top:2px!important;}#rules .ruleCard.greenCard > div:not(.bigSideIcon):not(.shield){grid-column:2!important;grid-row:1!important;}#rules .ruleCard.greenCard .shield{grid-column:2!important;grid-row:2!important;justify-self:start!important;margin-top:12px!important;width:46px!important;height:46px!important;}#rules .resultLine{grid-template-columns:48px minmax(0,1fr)!important;padding:16px!important;}#rules .resultSymbol{width:44px!important;height:44px!important;}}
+
+/* v63 eindscherm weekmissie rustiger */
+#end .shop p{margin:0;}
+#end .endMissionRows{margin-top:12px;}
+#end .missionRow{font-size:17px;}
+#end .missionRow span:nth-child(2){line-height:1.25;}
+#keepText{margin-top:14px!important;color:var(--muted);line-height:1.35;}
+
+/* v65: startscherm rustiger; missie kiezen is leidend */
+.missionSelectTitle{
+  margin:26px 0 12px!important;
+  font-size:30px!important;
+  letter-spacing:-.035em;
+}
+#startHs{
+  margin-top:16px!important;
+}
+
+
+/* v66 geluidknop */
+#soundToggle{
+  pointer-events:auto;
+  cursor:pointer;
+  width:44px;
+  height:44px;
+  border-radius:999px;
+  border:2px solid rgba(255,255,255,.55);
+  background:rgba(255,255,255,.18);
+  color:white;
+  display:grid;
+  place-items:center;
+  font-size:22px;
+  font-weight:900;
+  box-shadow:0 8px 18px rgba(0,0,0,.18);
+  -webkit-tap-highlight-color:transparent;
+}
+#soundToggle:active{
+  transform:translateY(2px);
+}
+.ninjaBadge{
+  pointer-events:auto!important;
+}
+
+
+/* ===== v68 fixes: speluitleg weekdoel compact + knop-lock ===== */
+.rulesBlock.success{
+  grid-template-columns:64px 1fr!important;
+  gap:18px!important;
+  align-items:center!important;
+  min-height:auto!important;
+  padding:22px!important;
+  overflow:hidden!important;
+}
+.rulesBlock.success .bigIcon{
+  width:58px!important;
+  height:58px!important;
+  border-radius:18px!important;
+  display:grid!important;
+  place-items:center!important;
+  font-size:34px!important;
+  background:rgba(17,168,107,.12)!important;
+  margin:0!important;
+}
+.rulesBlock.success div:last-child{
+  font-size:20px!important;
+  line-height:1.35!important;
+  max-width:100%!important;
+  overflow-wrap:break-word!important;
+}
+.rulesBlock.success b{
+  white-space:normal!important;
+}
+@media(max-width:520px){
+  .rulesBlock.success{
+    grid-template-columns:52px 1fr!important;
+    padding:18px!important;
+  }
+  .rulesBlock.success .bigIcon{
+    width:48px!important;
+    height:48px!important;
+    font-size:28px!important;
+  }
+  .rulesBlock.success div:last-child{
+    font-size:18px!important;
+  }
+}
+.option.disabled{
+  pointer-events:none!important;
+  opacity:.78!important;
+}
+
+
+/* v73 spelers zoeken */
+.playerSearchWrap{
+  margin:18px 0 10px;
+}
+#playerSearch{
+  width:100%;
+  border:3px solid #eadfff;
+  background:#fff;
+  border-radius:22px;
+  padding:15px 18px;
+  font-size:20px;
+  font-weight:800;
+  color:var(--ink);
+  box-shadow:0 6px 18px rgba(22,10,54,.08);
+}
+#playerSearch::placeholder{
+  color:#8b7aa8;
+  font-weight:700;
+}
+#playerSearchCount{
+  margin:8px 4px 0;
+  color:var(--muted);
+  font-size:15px;
+  font-weight:800;
+}
+.noPlayersFound{
+  background:#fff;
+  border:3px solid #eadfff;
+  border-radius:22px;
+  padding:18px;
+  text-align:center;
+  color:var(--muted);
+  font-weight:900;
+}
+
+
+/* v74 simpel weekdoel + spelersstatistieken */
+#rules .ruleCard.greenCard{
+  display:grid!important;
+  grid-template-columns:52px 1fr!important;
+  gap:14px!important;
+  align-items:center!important;
+  background:white!important;
+  border:2px solid #eadfff!important;
+  color:#24143f!important;
+}
+#rules .ruleCard.greenCard .bigSideIcon{
+  grid-column:1!important;
+  grid-row:1!important;
+  width:48px!important;
+  height:48px!important;
+  border-radius:16px!important;
+  display:grid!important;
+  place-items:center!important;
+  background:#f1eaff!important;
+  font-size:28px!important;
+  margin:0!important;
+}
+#rules .ruleCard.greenCard .shield{display:none!important;}
+#rules .ruleCard.greenCard h2{margin:0 0 4px!important;font-size:24px!important;}
+#rules .ruleCard.greenCard p{margin:0!important;font-size:17px!important;line-height:1.35!important;}
+.playerCard{
+  text-align:left!important;
+  display:grid!important;
+  grid-template-columns:58px 1fr!important;
+  gap:12px!important;
+  align-items:center!important;
+  min-height:auto!important;
+}
+.playerCard .playerAvatar{font-size:44px!important;margin:0!important;text-align:center!important;}
+.playerMain{min-width:0;}
+.playerName{font-size:23px!important;margin-bottom:8px!important;}
+.playerMeta{display:flex;flex-wrap:wrap;gap:7px;margin-top:8px;}
+.playerMeta span{
+  background:#f1eaff;
+  border-radius:999px;
+  padding:6px 9px;
+  font-size:13px;
+  font-weight:900;
+  color:#24143f;
+}
+.playerLast{
+  margin-top:7px;
+  color:#65557d;
+  font-size:14px;
+  font-weight:800;
+  line-height:1.25;
+}
+#playerSearchCount{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;}
+
+
+/* v75 simpel spelerszoekscherm */
+.playerSearchWrap{
+  margin:18px 0 10px!important;
+}
+#playerSearch{
+  width:100%!important;
+  border:3px solid #eadfff!important;
+  background:#fff!important;
+  border-radius:22px!important;
+  padding:15px 18px!important;
+  font-size:20px!important;
+  font-weight:800!important;
+  color:var(--ink)!important;
+  box-shadow:0 6px 18px rgba(22,10,54,.08)!important;
+}
+#playerSearch::placeholder{
+  color:#8b7aa8!important;
+  font-weight:700!important;
+}
+#playerSearchCount{
+  margin:8px 4px 0!important;
+  color:#65557d!important;
+  font-size:15px!important;
+  font-weight:800!important;
+}
+.playerCard{
+  text-align:left!important;
+  display:grid!important;
+  grid-template-columns:58px 1fr!important;
+  gap:12px!important;
+  align-items:center!important;
+  min-height:112px!important;
+}
+.playerCard .playerAvatar{
+  font-size:44px!important;
+  margin:0!important;
+  text-align:center!important;
+}
+.playerMain{
+  min-width:0!important;
+}
+.playerName{
+  font-size:24px!important;
+  margin-bottom:8px!important;
+  color:#24143f!important;
+}
+.playerLast{
+  color:#65557d!important;
+  font-size:16px!important;
+  font-weight:800!important;
+  line-height:1.25!important;
+}
+.noPlayersFound{
+  background:#fff;
+  border:3px solid #eadfff;
+  border-radius:22px;
+  padding:18px;
+  text-align:center;
+  color:#65557d;
+  font-weight:900;
+}
+
+
+/* v78 eenvoudige speluitleg */
+#rules .ruleCard.greenCard p,
+#rules .ruleCard.yellowCard p{
+  margin:6px 0!important;
+}
+#rules .resultCard .resultLine{
+  min-height:86px!important;
+}
+
+
+/* v80: speluitleg zonder weekdoel-blok + level-up icoon */
+#rules .levelUpLine .resultSymbol{
+  background:#3a86ff!important;
+  font-size:24px!important;
+}
+#rules .resultCard .resultLine{
+  min-height:86px!important;
+}
+
+
+/* v81 weekmissie: doel + deadline */
+#weekGoalBox .missionRow,
+#subStatus .missionRow,
+#end .missionRow{
+  grid-template-columns:34px minmax(0,1fr) auto!important;
+}
+#weekGoalBox .missionRow.statusLine,
+#subStatus .missionRow.statusLine,
+#end .missionRow.statusLine{
+  grid-template-columns:1fr!important;
+  gap:4px!important;
+  align-items:start!important;
+}
+#weekGoalBox .missionRow.statusLine b,
+#subStatus .missionRow.statusLine b,
+#end .missionRow.statusLine b{
+  font-size:18px!important;
+  line-height:1.25!important;
+}
+
+
+/* v82 gekozen ontwerp: paarse, speelse quizpagina */
+#game.card{
+  background:linear-gradient(180deg,#6737dc 0%,#3b168f 100%)!important;
+  color:white!important;
+  border:0!important;
+  border-radius:34px!important;
+  padding:24px!important;
+  box-shadow:0 24px 55px rgba(22,10,54,.32)!important;
+  min-height:calc(100vh - 185px)!important;
+}
+
+#game .gameHud{
+  display:block!important;
+  margin:0 0 22px!important;
+}
+
+#game .gameHudTop{
+  display:flex!important;
+  align-items:center!important;
+  justify-content:space-between!important;
+  gap:12px!important;
+  margin-bottom:12px!important;
+}
+
+#game .gameChip{
+  background:rgba(255,255,255,.16)!important;
+  color:white!important;
+  border:1px solid rgba(255,255,255,.22)!important;
+  border-radius:999px!important;
+  padding:9px 14px!important;
+  font-size:18px!important;
+  font-weight:900!important;
+  box-shadow:0 8px 18px rgba(0,0,0,.12)!important;
+}
+
+#game .timeChip{
+  background:rgba(255,255,255,.20)!important;
+}
+
+#game .timerBarOuter{
+  height:12px!important;
+  background:rgba(255,255,255,.20)!important;
+  border-radius:999px!important;
+  margin:0 0 14px!important;
+  box-shadow:none!important;
+}
+
+#game .timerBarInner{
+  background:linear-gradient(90deg,#ffd166,#ffb703)!important;
+  border-radius:999px!important;
+}
+
+#game .timerBarInner.warning{
+  background:#ef476f!important;
+}
+
+#game .gameStats{
+  display:grid!important;
+  grid-template-columns:repeat(4,1fr)!important;
+  gap:8px!important;
+}
+
+#game .gameStats span{
+  background:rgba(255,255,255,.13)!important;
+  border:1px solid rgba(255,255,255,.18)!important;
+  border-radius:16px!important;
+  padding:9px 6px!important;
+  text-align:center!important;
+  color:white!important;
+  font-size:16px!important;
+  font-weight:900!important;
+}
+
+#game #titel{
+  color:white!important;
+  font-size:30px!important;
+  line-height:1.1!important;
+  margin:30px 0 18px!important;
+  text-shadow:0 3px 10px rgba(0,0,0,.15)!important;
+}
+
+#game #titel::before{
+  content:"🥷";
+  display:block;
+  font-size:82px;
+  line-height:1;
+  text-align:center;
+  margin:6px 0 22px;
+  filter:drop-shadow(0 12px 20px rgba(0,0,0,.25));
+}
+
+#game #vraag{
+  color:white!important;
+  font-size:58px!important;
+  line-height:1.05!important;
+  letter-spacing:-.04em!important;
+  margin:14px 0 18px!important;
+  text-shadow:0 4px 14px rgba(0,0,0,.18)!important;
+}
+
+#game .note{
+  color:rgba(255,255,255,.82)!important;
+  font-size:18px!important;
+  margin:0 0 18px!important;
+}
+
+#game .options{
+  display:grid!important;
+  grid-template-columns:repeat(2,1fr)!important;
+  gap:16px!important;
+}
+
+#game .option{
+  background:linear-gradient(145deg,#fffdf0,#fff7cf)!important;
+  border:3px solid #ffe480!important;
+  color:#24143f!important;
+  border-radius:24px!important;
+  min-height:108px!important;
+  font-size:42px!important;
+  font-weight:900!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  box-shadow:0 8px 0 #e9c95b,0 16px 26px rgba(0,0,0,.18)!important;
+  transition:transform .08s ease, box-shadow .08s ease, background .15s ease!important;
+}
+
+#game .option:active{
+  transform:translateY(5px) scale(.98)!important;
+  box-shadow:0 3px 0 #e9c95b,0 8px 16px rgba(0,0,0,.16)!important;
+}
+
+#game .option.disabled{
+  opacity:.82!important;
+}
+
+#game .feedback{
+  color:white!important;
+  min-height:42px!important;
+  font-size:24px!important;
+  text-align:center!important;
+  margin-top:18px!important;
+}
+
+#game .feedback.good{
+  color:#b9ffd7!important;
+}
+
+#game .feedback.bad{
+  color:#ffd1dc!important;
+}
+
+@media(max-width:520px){
+  #game.card{
+    padding:20px!important;
+    border-radius:30px!important;
+  }
+  #game .gameStats{
+    grid-template-columns:repeat(4,1fr)!important;
+    gap:6px!important;
+  }
+  #game .gameStats span{
+    font-size:14px!important;
+    padding:8px 4px!important;
+  }
+  #game #titel{
+    font-size:28px!important;
+    margin-top:24px!important;
+  }
+  #game #titel::before{
+    font-size:72px!important;
+    margin-bottom:18px!important;
+  }
+  #game #vraag{
+    font-size:54px!important;
+  }
+  #game .option{
+    min-height:104px!important;
+    font-size:40px!important;
+  }
+}
+
+
+/* v85 compact startscherm / gegevensformulier */
+#start.card{
+  padding:20px!important;
+}
+
+#start > h1{
+  font-size:32px!important;
+  margin-bottom:14px!important;
+}
+
+#start .topbar{
+  display:grid!important;
+  grid-template-columns:1fr auto!important;
+  gap:10px!important;
+  align-items:center!important;
+  margin-bottom:14px!important;
+}
+
+#start .topbar .pill{
+  padding:10px 14px!important;
+  font-size:17px!important;
+  white-space:nowrap!important;
+}
+
+#start #switchPlayerBtn{
+  min-height:48px!important;
+  padding:10px 14px!important;
+  margin:0!important;
+  font-size:17px!important;
+  white-space:nowrap!important;
+}
+
+#start .shop{
+  padding:18px!important;
+  border-radius:28px!important;
+  margin:12px 0!important;
+}
+
+#start .shop h2{
+  font-size:28px!important;
+  margin:0 0 14px!important;
+}
+
+#start label{
+  margin-top:0!important;
+  margin-bottom:5px!important;
+  font-size:17px!important;
+  line-height:1.15!important;
+}
+
+#start input,
+#start select{
+  min-height:48px!important;
+  padding:10px 14px!important;
+  font-size:18px!important;
+  border-radius:18px!important;
+  margin:0!important;
+}
+
+#start .grid{
+  display:grid!important;
+  grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  gap:14px!important;
+}
+
+#start .teacherRow{
+  display:grid!important;
+  grid-template-columns:105px 1fr!important;
+  gap:10px!important;
+}
+
+#start .missionSelectTitle{
+  margin:20px 0 10px!important;
+  font-size:30px!important;
+}
+
+#start hr{
+  margin:14px 0!important;
+}
+
+#startHs{
+  padding:10px 14px!important;
+  font-size:16px!important;
+  line-height:1.25!important;
+}
+
+#start > .grid:last-of-type{
+  grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  gap:12px!important;
+}
+
+#start > .grid:last-of-type button{
+  min-height:54px!important;
+  font-size:18px!important;
+  padding:10px 12px!important;
+}
+
+@media(max-width:520px){
+  #start.card{
+    padding:18px!important;
+  }
+
+  #start > h1{
+    font-size:30px!important;
+  }
+
+  #start .topbar{
+    grid-template-columns:1fr 1fr!important;
+  }
+
+  #start .topbar .pill,
+  #start #switchPlayerBtn{
+    font-size:15px!important;
+    padding:10px!important;
+    text-align:center!important;
+  }
+
+  #start .shop{
+    padding:16px!important;
+    border-radius:26px!important;
+  }
+
+  #start .shop h2{
+    font-size:26px!important;
+  }
+
+  #start .grid{
+    grid-template-columns:1fr!important;
+    gap:11px!important;
+  }
+
+  #start label{
+    font-size:16px!important;
+  }
+
+  #start input,
+  #start select{
+    min-height:46px!important;
+    font-size:17px!important;
+    padding:9px 12px!important;
+  }
+
+  #start .teacherRow{
+    grid-template-columns:96px 1fr!important;
+  }
+
+  #start > .grid:last-of-type{
+    grid-template-columns:1fr 1fr!important;
+  }
+
+  #start > .grid:last-of-type button{
+    font-size:16px!important;
+    min-height:50px!important;
+  }
+}
+
+
+/* v87 nieuwe vraagtypes: herken tafel + reeks afmaken */
+#game #titel{
+  word-break:normal!important;
+}
+#game #vraag{
+  white-space:normal!important;
+}
+
+
+/* v91 weekmissie geslaagd knop */
+.weekSuccessBtn{
+  display:none;
+  width:100%;
+  margin-top:16px;
+  padding:14px 16px;
+  border-radius:20px;
+  border:0;
+  background:linear-gradient(135deg,#2ecc71,#11a86b);
+  color:white;
+  font-size:20px;
+  font-weight:900;
+  box-shadow:0 6px 0 #0b7f4e,0 12px 24px rgba(17,168,107,.24);
+}
+.weekSuccessBtn.show{
+  display:block;
+}
+
+
+/* v93 subtiele terug-link */
+.minimalBack{
+  width:auto!important;
+  min-height:0!important;
+  margin:0 0 16px!important;
+  padding:0!important;
+  border:0!important;
+  background:transparent!important;
+  box-shadow:none!important;
+  color:#24143f!important;
+  font-size:21px!important;
+  font-weight:900!important;
+  text-align:left!important;
+  display:inline-flex!important;
+  align-items:center!important;
+  gap:6px!important;
+  cursor:pointer!important;
+}
+
+#rules .minimalBack{
+  color:#24143f!important;
+}
+
+.minimalBack:active{
+  transform:scale(.96)!important;
+}
+
+
+/* v94 Geslaagd-knop wordt altijd berekend uit bestaande sessies */
+.weekSuccessBtn{
+  display:none;
+  width:100%;
+  margin-top:16px;
+  padding:14px 16px;
+  border-radius:20px;
+  border:0;
+  background:linear-gradient(135deg,#2ecc71,#11a86b);
+  color:white;
+  font-size:20px;
+  font-weight:900;
+  box-shadow:0 6px 0 #0b7f4e,0 12px 24px rgba(17,168,107,.24);
+}
+.weekSuccessBtn.show{
+  display:block!important;
+}
+
+
+/* v96 welkomslaag */
+.welcomeLayer{
+  position:fixed;
+  inset:0;
+  z-index:10000;
+  background:rgba(20,11,46,.78);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:22px;
+  backdrop-filter:blur(4px);
+}
+
+.welcomeCard{
+  width:100%;
+  max-width:430px;
+  background:linear-gradient(180deg,#6d35f5,#321071);
+  border-radius:34px;
+  padding:18px 18px 22px;
+  color:white;
+  text-align:center;
+  box-shadow:0 24px 70px rgba(0,0,0,.45);
+  position:relative;
+  border:2px solid rgba(255,255,255,.18);
+  animation:welcomePop .35s ease-out;
+}
+
+@keyframes welcomePop{
+  from{transform:scale(.92);opacity:0}
+  to{transform:scale(1);opacity:1}
+}
+
+.welcomeCloseBtn{
+  position:absolute;
+  top:12px;
+  right:12px;
+  width:42px!important;
+  height:42px!important;
+  min-height:42px!important;
+  border-radius:999px!important;
+  border:2px solid rgba(255,255,255,.35)!important;
+  background:rgba(255,255,255,.18)!important;
+  box-shadow:none!important;
+  color:white!important;
+  font-size:28px!important;
+  line-height:1!important;
+  padding:0!important;
+  margin:0!important;
+}
+
+.welcomeArt{
+  width:100%;
+  border-radius:26px;
+  overflow:hidden;
+  background:radial-gradient(circle at top,#8d63ff,#3b1686);
+  margin-bottom:16px;
+  box-shadow:inset 0 0 0 2px rgba(255,255,255,.14);
+}
+
+.welcomeArt img{
+  display:block;
+  width:100%;
+  height:auto;
+}
+
+.welcomeFallback{
+  min-height:220px;
+  display:grid;
+  place-items:center;
+  font-size:76px;
+  font-weight:900;
+}
+
+.welcomeFallback span{
+  display:inline-block;
+  margin:6px;
+  font-size:22px;
+  background:rgba(255,255,255,.18);
+  padding:8px 12px;
+  border-radius:14px;
+}
+
+.welcomeCard h1{
+  color:white!important;
+  font-size:34px!important;
+  line-height:1.05!important;
+  margin:8px 0 8px!important;
+  letter-spacing:-.04em;
+}
+
+.welcomeCard p{
+  margin:0 0 16px!important;
+  color:rgba(255,255,255,.92);
+  font-size:20px;
+  line-height:1.3;
+  font-weight:800;
+}
+
+.welcomeStartBtn{
+  width:100%!important;
+  min-height:62px!important;
+  border-radius:24px!important;
+  border:0!important;
+  background:linear-gradient(135deg,#ffd166,#ffb703)!important;
+  color:#3b2600!important;
+  font-size:24px!important;
+  font-weight:900!important;
+  box-shadow:0 7px 0 #d08d00,0 14px 28px rgba(0,0,0,.22)!important;
+  margin:0!important;
+}
+
+.welcomeStartBtn:active{
+  transform:translateY(4px)!important;
+  box-shadow:0 3px 0 #d08d00!important;
+}
+
+
+/* v98 extra polish: welkom + gamegevoel */
+.welcomeCard{
+  overflow:hidden;
+}
+
+.welcomeCard:before{
+  content:"";
+  position:absolute;
+  inset:-60px;
+  background:linear-gradient(120deg,transparent 20%,rgba(255,255,255,.22) 45%,transparent 70%);
+  transform:translateX(-120%) rotate(12deg);
+  animation:welcomeShine 2.4s ease-in-out .25s 1;
+  pointer-events:none;
+}
+
+@keyframes welcomeShine{
+  to{transform:translateX(120%) rotate(12deg);}
+}
+
+.welcomeArt{
+  position:relative;
+}
+
+.welcomeArt:after{
+  content:"⚔️";
+  position:absolute;
+  right:14px;
+  top:12px;
+  font-size:42px;
+  filter:drop-shadow(0 6px 10px rgba(0,0,0,.35));
+  animation:swordSlash 1.1s ease-in-out .35s 1;
+  transform-origin:center;
+}
+
+@keyframes swordSlash{
+  0%{transform:translate(40px,-30px) rotate(-45deg);opacity:0}
+  30%{opacity:1}
+  55%{transform:translate(-16px,34px) rotate(18deg);opacity:1}
+  100%{transform:translate(0,0) rotate(0);opacity:1}
+}
+
+.welcomeStartBtn{
+  position:relative!important;
+  overflow:hidden!important;
+}
+
+.welcomeStartBtn:after{
+  content:"";
+  position:absolute;
+  top:0;
+  bottom:0;
+  width:44px;
+  left:-60px;
+  background:rgba(255,255,255,.36);
+  transform:skewX(-18deg);
+  animation:startBtnSweep 2.2s ease-in-out infinite;
+}
+
+@keyframes startBtnSweep{
+  0%,35%{left:-70px}
+  70%,100%{left:110%}
+}
+
+.option{
+  transition:transform .12s ease, box-shadow .12s ease, filter .12s ease!important;
+}
+
+.option:active{
+  transform:translateY(3px) scale(.985)!important;
+  filter:brightness(.98)!important;
+}
+
+.ninja{
+  animation:float 1.5s infinite ease-in-out, ninjaGlow 2.4s infinite ease-in-out!important;
+}
+
+@keyframes ninjaGlow{
+  0%,100%{opacity:1}
+  50%{opacity:.92}
+}
+
+#progress,.progressInner,#timerBar{
+  box-shadow:0 0 14px rgba(255,183,3,.28)!important;
+}
+
+
+/* v99 schone welkomslaag: geen dubbele tekst of dubbele startknop */
+.welcomeImageOnly{
+  padding:0!important;
+  max-width:430px!important;
+  border-radius:30px!important;
+  overflow:hidden!important;
+  cursor:pointer!important;
+  background:transparent!important;
+  border:0!important;
+}
+
+.welcomeImageOnly:before,
+.welcomeImageOnly .welcomeArt:after{
+  display:none!important;
+}
+
+.welcomeImageOnly .welcomeArt{
+  margin:0!important;
+  border-radius:30px!important;
+  box-shadow:none!important;
+  background:transparent!important;
+}
+
+.welcomeImageOnly .welcomeArt img{
+  width:100%!important;
+  display:block!important;
+  border-radius:30px!important;
+}
+
+.welcomeLayer{
+  padding:18px!important;
+}
+
+
+/* v101 welkomslaag altijd wegklikbaar */
+#welcomeLayer.hide{display:none!important;}
+#welcomeLayer{cursor:pointer!important;}
+.welcomeImageOnly,.welcomeImageOnly *{cursor:pointer!important;}
+.welcomeImageOnly img{pointer-events:auto!important;}
+
+
+/* v102 dynamische welkom-layer: naam + alleen keersommen */
+.welcomeLayer{
+  position:fixed!important;
+  inset:0!important;
+  z-index:10000!important;
+  background:radial-gradient(circle at top,#6d35f5 0%,#321071 52%,#160b35 100%)!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  padding:20px!important;
+  backdrop-filter:blur(4px)!important;
+  cursor:pointer!important;
+}
+
+.welcomeLayer.hide{
+  display:none!important;
+}
+
+.dynamicWelcomeCard{
+  position:relative!important;
+  width:100%!important;
+  max-width:430px!important;
+  min-height:560px!important;
+  border-radius:34px!important;
+  overflow:hidden!important;
+  padding:22px!important;
+  color:white!important;
+  text-align:center!important;
+  background:linear-gradient(180deg,#6d35f5,#321071)!important;
+  border:2px solid rgba(255,255,255,.18)!important;
+  box-shadow:0 24px 70px rgba(0,0,0,.45)!important;
+  animation:welcomePop .35s ease-out!important;
+  cursor:pointer!important;
+}
+
+.dynamicWelcomeCard:before{
+  content:""!important;
+  position:absolute!important;
+  inset:-70px!important;
+  background:linear-gradient(120deg,transparent 20%,rgba(255,255,255,.22) 45%,transparent 70%)!important;
+  transform:translateX(-120%) rotate(12deg)!important;
+  animation:welcomeShine 2.2s ease-in-out .2s 1!important;
+  pointer-events:none!important;
+}
+
+@keyframes welcomePop{
+  from{transform:scale(.92);opacity:0}
+  to{transform:scale(1);opacity:1}
+}
+
+@keyframes welcomeShine{
+  to{transform:translateX(120%) rotate(12deg)}
+}
+
+.dynamicWelcomeArt{
+  position:relative!important;
+  width:100%!important;
+  border-radius:26px!important;
+  overflow:hidden!important;
+  background:radial-gradient(circle at center,#8d63ff,#3b1686)!important;
+  margin:18px 0 18px!important;
+  box-shadow:inset 0 0 0 2px rgba(255,255,255,.14),0 16px 34px rgba(0,0,0,.22)!important;
+}
+
+.dynamicWelcomeArt img{
+  display:block!important;
+  width:100%!important;
+  border-radius:26px!important;
+}
+
+.welcomeSlash{
+  position:absolute!important;
+  top:42px!important;
+  right:38px!important;
+  z-index:4!important;
+  font-size:50px!important;
+  opacity:0!important;
+  transform-origin:center!important;
+  filter:drop-shadow(0 8px 12px rgba(0,0,0,.35))!important;
+  animation:welcomeSlashAnim .9s ease-out .35s 1!important;
+}
+
+@keyframes welcomeSlashAnim{
+  0%{opacity:0;transform:translate(40px,-30px) rotate(-45deg) scale(.8)}
+  35%{opacity:1}
+  60%{opacity:1;transform:translate(-20px,38px) rotate(22deg) scale(1.28)}
+  100%{opacity:0;transform:translate(-8px,18px) rotate(0) scale(1)}
+}
+
+.welcomeSums{
+  position:absolute!important;
+  inset:0!important;
+  z-index:5!important;
+  pointer-events:none!important;
+  overflow:hidden!important;
+}
+
+.welcomeSum{
+  position:absolute!important;
+  left:50%!important;
+  top:38%!important;
+  background:rgba(255,209,102,.96)!important;
+  color:#3b2600!important;
+  border-radius:14px!important;
+  padding:7px 10px!important;
+  font-size:19px!important;
+  font-weight:900!important;
+  box-shadow:0 8px 18px rgba(0,0,0,.22)!important;
+  animation:sumBurst 1.25s ease-out forwards!important;
+}
+
+@keyframes sumBurst{
+  0%{opacity:0;transform:translate(-50%,-50%) scale(.5) rotate(0)}
+  18%{opacity:1}
+  100%{opacity:0;transform:translate(calc(-50% + var(--x)),calc(-50% + var(--y))) scale(1.35) rotate(var(--r))}
+}
+
+#welcomeTitle{
+  color:white!important;
+  font-size:34px!important;
+  line-height:1.05!important;
+  margin:8px 0 8px!important;
+  letter-spacing:-.04em!important;
+  text-shadow:0 5px 14px rgba(0,0,0,.26)!important;
+  animation:welcomeTextPop .45s ease-out .15s both!important;
+}
+
+#welcomeSubtitle{
+  color:rgba(255,255,255,.92)!important;
+  margin:0!important;
+  font-size:20px!important;
+  line-height:1.32!important;
+  font-weight:850!important;
+}
+
+.welcomeHint{
+  margin-top:16px!important;
+  color:#3b2600!important;
+  background:linear-gradient(135deg,#ffd166,#ffb703)!important;
+  border-radius:999px!important;
+  padding:13px 18px!important;
+  font-size:20px!important;
+  font-weight:900!important;
+  box-shadow:0 6px 0 #d08d00,0 12px 26px rgba(0,0,0,.22)!important;
+  position:relative!important;
+  overflow:hidden!important;
+}
+
+.welcomeHint:after{
+  content:""!important;
+  position:absolute!important;
+  top:0!important;
+  bottom:0!important;
+  width:44px!important;
+  left:-60px!important;
+  background:rgba(255,255,255,.35)!important;
+  transform:skewX(-18deg)!important;
+  animation:startBtnSweep 2.2s ease-in-out infinite!important;
+}
+
+@keyframes welcomeTextPop{
+  from{opacity:0;transform:translateY(8px) scale(.96)}
+  to{opacity:1;transform:translateY(0) scale(1)}
+}
+
+@keyframes startBtnSweep{
+  0%,35%{left:-70px}
+  70%,100%{left:110%}
+}
+
+@media(max-width:520px){
+  .dynamicWelcomeCard{
+    min-height:520px!important;
+    padding:18px!important;
+  }
+  #welcomeTitle{
+    font-size:31px!important;
+  }
+  #welcomeSubtitle{
+    font-size:18px!important;
+  }
+  .welcomeSum{
+    font-size:17px!important;
+  }
+}
+
+
+/* v103 Optie B: simpeler voor kinderen + ondermenu */
+body{padding-bottom:96px!important}
+#start.card{background:transparent!important;box-shadow:none!important;padding:0!important;margin-top:8px!important}
+#start>h1,#start .topbar{display:none!important}
+#start .card.shop{border-radius:26px!important;padding:16px!important;margin:12px 0!important}
+#start .card.shop:first-of-type h2,#start .card.shop:nth-of-type(3) h2{font-size:24px!important;margin-bottom:8px!important}
+#start .card.shop:first-of-type .grid{grid-template-columns:1fr 1fr!important;gap:8px!important}
+#start label{font-size:16px!important}
+#start input,#start select{min-height:44px!important;font-size:16px!important;padding:9px 10px!important;border-radius:14px!important}
+#start .missionSelectTitle{font-size:28px!important;margin:16px 0 8px!important}
+#start .missionRow{padding:10px 0!important;font-size:16px!important;grid-template-columns:28px 1fr auto!important}
+#start .missionRow b{font-size:16px!important}
+#start .checkBox{width:24px!important;height:24px!important;border-radius:7px!important;font-size:17px!important}
+#startHs{font-size:15px!important;text-align:center!important;padding:10px 12px!important;margin:10px 0 12px!important}
+#start>.grid:last-of-type{grid-template-columns:1fr 1fr!important;gap:10px!important}
+#startBtn{grid-column:1/-1!important;min-height:66px!important;font-size:24px!important;border-radius:24px!important;background:linear-gradient(135deg,#ffd166,#ffb703)!important;color:#3b2600!important;box-shadow:0 7px 0 #d08d00!important}
+#historyBtn,#rulesBtn,#resetBtn{min-height:52px!important;font-size:16px!important;border-radius:18px!important}
+#game.card{border-radius:28px!important;padding:18px!important}
+#game .topbar{gap:8px!important;margin-bottom:18px!important}
+#game .topbar .pill{font-size:15px!important;padding:10px 8px!important}
+#vraag{font-size:44px!important;margin:16px 0 20px!important}
+#titel{font-size:30px!important}.option{min-height:82px!important;font-size:30px!important}
+.bottomNav{position:fixed;left:12px;right:12px;bottom:10px;z-index:9999;display:grid;grid-template-columns:repeat(5,1fr);gap:4px;background:rgba(30,13,70,.92);border:2px solid rgba(255,255,255,.16);border-radius:26px;padding:8px;box-shadow:0 12px 34px rgba(0,0,0,.35);backdrop-filter:blur(10px)}
+.bottomNav.hide{display:none!important}
+.bottomNav button{min-height:58px!important;margin:0!important;padding:6px 3px!important;border-radius:18px!important;background:transparent!important;box-shadow:none!important;border:0!important;color:rgba(255,255,255,.72)!important;font-size:22px!important;display:flex!important;flex-direction:column!important;align-items:center!important;justify-content:center!important;gap:3px!important}
+.bottomNav button span{font-size:11px!important;font-weight:900!important}
+.bottomNav button.active{background:linear-gradient(135deg,#7c4dff,#4f27c9)!important;color:white!important;box-shadow:0 5px 16px rgba(124,77,255,.35)!important}
+@media(max-width:520px){main{padding-bottom:110px!important}#start .card.shop:first-of-type .grid{grid-template-columns:1fr!important}#start>.grid:last-of-type{grid-template-columns:1fr!important}}
+
+</style>
+</head>
+<body>
+<main>
+<div id="appTopStatus" style="
+  position:fixed;
+  top:10px;
+  left:10px;
+  z-index:999;
+  display:flex;
+  flex-direction:column;
+  align-items:flex-start;
+  gap:4px;
+  pointer-events:none;
+">
+  <div id="statusDot" style="
+    width:14px;
+    height:14px;
+    border-radius:50%;
+    background:orange;
+    box-shadow:0 0 8px rgba(0,0,0,.35);
+  "></div>
+  <div id="versionTop" style="
+    font-size:12px;
+    font-weight:900;
+    color:white;
+    opacity:.9;
+    text-shadow:0 0 6px rgba(0,0,0,.6);
+  ">v103</div>
+</div>
+
+<div id="appError" class="card hide" style="border:3px solid #ef476f;color:#ef476f;font-weight:900"></div>
+<div class="ninjaWrap">
+  <div class="progressOuter"><div id="progress" class="progressInner"></div></div>
+  <div class="ninjaBadge"><span id="ninja" class="ninja starter">🥷⚪</span><span id="rankLabel">Starter</span><button id="soundToggle" type="button" aria-label="Geluid aan of uit">🔊</button></div>
+</div>
+
+<section id="login" class="card hero">
+<h1>🥷 Tafel Ninja</h1>
+<p class="note">Kies je speler. Bestaat je naam al? Tik dan op je speler en voer je pincode in.</p>
+<p id="cloudStatus" class="hide"></p>
+<div class="playerActions">
+  <button id="showNewPlayerBtn" class="light">+ Nieuwe speler</button>
+  <button id="managePlayersBtn" class="light">⚙️ Beheer</button>
+</div>
+<button id="rulesFromLoginBtn" class="gold">📖 Speluitleg</button>
+<div class="playerSearchWrap">
+  <input id="playerSearch" type="search" placeholder="🔎 Zoek speler..." autocomplete="off">
+  <div id="playerSearchCount"></div>
+</div>
+<div class="playerListBox">
+  <div id="playerGrid" class="grid"></div>
+</div>
+</section>
+
+<section id="start" class="card hide">
+<h1>🥷 Tafel Ninja</h1>
+<div class="topbar">
+  <span class="pill">Speler: <span id="activePlayerLabel"></span></span>
+  <button class="small light" id="switchPlayerBtn">Wissel speler</button>
+</div>
+<div class="card shop">
+<h2>Jouw gegevens</h2>
+<div class="grid">
+<div><label>Naam kind</label><input id="kind" value=""></div>
+<div><label>Vriend 1</label><input id="vriend1" value="Sam"></div>
+<div><label>Vriend 2</label><input id="vriend2" value="Noor"></div>
+<div><label>Familielid</label><input id="familie" value="Oma"></div>
+<div>
+<label>Schoolpersoon</label>
+<div class="teacherRow">
+<select id="teacherRole"><option>Juf</option><option>Meester</option></select>
+<input id="teacherName" value="Anna">
+</div>
+</div>
+</div>
+</div>
+
+<h2 class="missionSelectTitle">Selecteer missie</h2>
+<div class="card shop">
+  <label><input type="radio" name="mode" value="single" checked> Los oefenen: kies 1 tafel</label>
+  <select id="singleTable">
+    <option>1</option><option selected>2</option><option>3</option><option>4</option><option>5</option>
+    <option>6</option><option>7</option><option>8</option><option>9</option><option>10</option><option>11</option><option>12</option>
+  </select>
+  <hr>
+  <label><input type="radio" name="mode" value="challenge"> Ninja-statuswedstrijd</label>
+  <select id="challengeLevel">
+    <option value="Starter">Starter: tafels 1, 2 en 10</option>
+    <option value="Bronze">Bronze Ninja: tafels 1 t/m 5 en 10</option>
+    <option value="Zilver">Zilver Ninja: tafels 1 t/m 10</option>
+    <option value="Goud">Goud Ninja: tafels 1 t/m 12</option>
+  </select>
+</div>
+
+<div class="card shop">
+<h2>🥷 Jouw weekmissie</h2>
+<div id="weekGoalBox"></div>
+</div>
+
+<p id="startHs" class="pill">Highscore: -</p>
+<div class="grid">
+<button id="startBtn">Start missie</button>
+<button id="historyBtn" class="gold">🏆 Prijzenkast</button>
+<button id="rulesBtn" class="light">📖 Speluitleg</button>
+<button id="resetBtn" class="danger">🔒 Reset speler</button>
+</div>
+</section>
+
+
+
+<section id="rules" class="card hide rulesNew">
+  <button class="minimalBack" type="button" onclick="goBackFromRules()">← Terug</button>
+  
+
+  <div class="rulesHero">
+    <div class="rulesHeroArt">🥷</div>
+    <div class="rulesHeroText">
+      <div class="eyebrow">Speluitleg</div>
+      <h1>Word een<br><span>Tafel Ninja!</span></h1>
+      <p>Oefen tafels, speel missies en behoud of verhoog je Ninja-status.</p>
+    </div>
+  </div>
+
+  <div class="rulesCards">
+    <article class="ruleCard whiteCard">
+      <div class="ruleNumber purple">1</div>
+      <div>
+        <h2>Start als Ninja</h2>
+        <p>Iedereen begint met de Ninja-status <b>Starter</b>.</p>
+      </div>
+      <div class="miniBadge">Starter</div>
+    </article>
+
+    <article class="ruleCard yellowCard">
+      <div class="ruleNumber yellow">2</div>
+      <div>
+        <h2>Behoud of verhoog je status</h2>
+        <p>Speel wekelijks <b>1 wedstrijd</b>.</p>
+        <p>Oefen daarnaast <b>3 losse tafels</b>.</p>
+      </div>
+      <div class="bigSideIcon">🏆</div>
+    </article>
+<article class="ruleCard resultCard">
+      <div class="resultLine badLine">
+        <span class="resultSymbol">✕</span>
+        <div><h2>Lukt het niet?</h2><p>Dan zak je <b>1 level omlaag</b>.</p></div>
+      </div>
+      <div class="resultLine goodLine">
+        <span class="resultSymbol">✓</span>
+        <div><h2>Lukt het wel?</h2><p>Dan behoud je je <b>status</b>.</p></div>
+      </div>
+      <div class="resultLine levelUpLine">
+        <span class="resultSymbol">📈</span>
+        <div><h2>Haal je een hoger level?</h2><p>Dan ga je in <b>status omhoog</b>.</p></div>
+      </div>
+    </article>
+  </div>
+
+  <h2 class="rulesSectionTitle">Statussen</h2>
+
+  <div class="statusGridNew">
+    <div class="statusTile starterTile">
+      <div class="statusAvatar">🥷⚪</div>
+      <b>Starter</b>
+      <span>Tafels 1, 2 & 10</span>
+    </div>
+    <div class="statusTile bronzeTile">
+      <div class="statusAvatar">🥷🥉</div>
+      <b>Bronze Ninja</b>
+      <span>Tafels 1 t/m 5 & 10</span>
+    </div>
+    <div class="statusTile silverTile">
+      <div class="statusAvatar">🥷🥈</div>
+      <b>Zilver Ninja</b>
+      <span>Tafels 1 t/m 10</span>
+    </div>
+    <div class="statusTile goldTile">
+      <div class="statusAvatar">🥷🏆</div>
+      <b>Goud Ninja</b>
+      <span>Tafels 1 t/m 12</span>
+    </div>
+  </div>
+
+  <div class="rewardStrip">
+    <div><b>🏆 Beker</b><span>0 fout</span></div>
+    <div><b>🏅 Medaille</b><span>1 of 2 fout</span></div>
+    <div><b>👍 Duim</b><span>3 of meer fout</span></div>
+  </div>
+</section>
+
+
+
+<section id="game" class="card hide">
+<div class="topbar gameHud">
+  <div class="gameHudTop">
+    <div class="gameChip">⭐ <span id="nr">1</span>/<span id="tot">1</span></div>
+    <div class="gameChip timeChip">⏱️ <span id="tijd">0</span>s</div>
+  </div>
+  <div class="timerBarOuter"><div id="timerBar" class="timerBarInner"></div></div>
+  <div class="gameStats">
+    <span>✅ <b id="goed">0</b></span>
+    <span>❌ <b id="fout">0</b></span>
+    <span>🔥 <b id="streak">0</b></span>
+    <span>🥷 <b id="rank">Starter</b></span>
+  </div>
+</div>
+<h2 id="titel"></h2>
+<div id="vraag" class="big"></div>
+<div id="choiceBox">
+<p class="note">Tik het goede antwoord.</p>
+<div id="choices" class="options"></div>
+</div>
+<div id="feedback" class="feedback"></div>
+</section>
+
+<section id="end" class="card hide">
+  <button class="minimalBack" type="button" onclick="goHome()">← Terug</button>
+
+<h1>🎉 Missie klaar!</h1>
+<p id="endText"></p>
+<div class="grid">
+<div class="pill">✅ Goed: <span id="endGoed"></span></div>
+<div class="pill">❌ Fout: <span id="endFout"></span></div>
+<div class="pill">⏱️ Resterend: <span id="endTijd"></span>s</div>
+<div class="pill">⭐ Score: <span id="endScore"></span></div>
+</div>
+<h2 id="endBadge"></h2>
+<div class="card shop">
+<h2>🎯 Weekmissie</h2>
+<p id="weakText"></p>
+<p id="keepText"></p>
+</div>
+
+<button id="endHistoryBtn" class="gold">🏆 Naar prijzenkast</button>
+</section>
+
+<section id="history" class="card hide">
+  <button class="minimalBack" type="button" onclick="goHome()">← Terug</button>
+
+<h1>🏆 Prijzenkast van <span id="historyPlayer"></span></h1>
+<div id="subStatus" class="card shop"></div>
+<h2>Huidige ninja-status</h2>
+<div id="currentBadge" class="card"></div>
+<h2>Ninja-statuswedstrijden</h2>
+<div id="challengeStats"></div>
+<h2>Overzicht per losse tafel</h2>
+<div id="tableStats"></div>
+<h2>Alle sessies</h2>
+<div id="sessionList"></div>
+
+</section>
+
+<div id="pinModal" class="modal hide">
+  <div class="modalCard">
+    <h1 id="pinTitle">Pincode</h1>
+    <p id="pinText" class="note"></p>
+    <input id="pinInput" class="pinDots" type="password" inputmode="numeric" maxlength="4" placeholder="••••">
+    <button id="pinOkBtn">Open</button>
+    <button id="pinCancelBtn" class="light">Annuleer</button>
+  </div>
+</div>
+
+<div id="newPlayerModal" class="modal hide">
+  <div class="modalCard">
+    <h1>Nieuwe speler</h1>
+    <input id="newName" placeholder="Naam kind">
+    <input id="newPin" class="pinDots" type="password" inputmode="numeric" maxlength="4" placeholder="Pincode">
+    <p id="newPlayerError" class="bad" style="font-weight:900;min-height:28px"></p>
+    <p class="note">Kies een simpele 4-cijferige code.</p>
+    <button id="createPlayerBtn">Maak speler</button>
+    <button id="newPlayerCancelBtn" class="light">Annuleer</button>
+  </div>
+</div>
+
+
+<div id="managePlayersModal" class="modal hide">
+  <div class="modalCard">
+    <h1>Spelers beheren</h1>
+    <p class="note">Verwijderen kan alleen met admincode.</p>
+    <div id="managePlayersList"></div>
+    <button id="manageCloseBtn" class="light">Sluiten</button>
+  </div>
+</div>
+
+<div id="encourageOverlay" class="encourage hide">
+  <div class="encourageCard">
+    <div class="encourageNinja">🥷✨</div>
+    <h1 id="encourageTitle">Ga zo door!</h1>
+    <p id="encourageText"></p>
+    <button id="encourageBtn">Verder spelen</button>
+  </div>
+</div>
+
+
+
+
+
+
+<nav id="bottomNav" class="bottomNav hide">
+  <button type="button" data-tab="home" class="active">🏠<span>Home</span></button>
+  <button type="button" data-tab="wedstrijd">⚔️<span>Wedstrijd</span></button>
+  <button type="button" data-tab="training">💪<span>Training</span></button>
+  <button type="button" data-tab="stats">📊<span>Stats</span></button>
+  <button type="button" data-tab="profiel">👤<span>Profiel</span></button>
+</nav>
+</main>
+<div id="confetti" class="confetti"></div>
+
+
+<script>
+const FIREBASE_PROJECT_ID = "ninja-1ee98";
+const FIREBASE_API_KEY = "AIzaSyBAeVdHpUgHa-SlZGEtiwqqVH4C8eFscPk";
+const FIRESTORE_BASE = "https://firestore.googleapis.com/v1/projects/" + FIREBASE_PROJECT_ID + "/databases/(default)/documents";
+</script>
+
+<script>
+window.onerror=function(msg,src,line,col,err){
+ var box=document.getElementById("appError");
+ if(box){box.textContent="App-fout v103: "+msg+" (regel "+line+")";box.classList.remove("hide");}
+};
+(function(){
+let names={},tables=[2],questions=[],idx=0,good=0,bad=0,streak=0,bestStreak=0,startTime=0,timer=null,wrongThisSession={},paused=false,encouragedAt={},currentPlayer="",returnAfterRules="login",pendingPlayer=null;
+
+const $=id=>document.getElementById(id);
+const FAMILY_ID="joost-gezin";
+const MAX_GAME_SECONDS=240;
+let remotePlayersCache=[];
+let playersLoaded=false;
+let saveQueue={};
+let saveTimer=null;
+let cloudEverConnected=false;
+let gameOverTriggered=false;
+let wasOffline=false;
+let soundEnabled=true;
+
+// iPhone/Safari: activeer audio zo vroeg mogelijk bij de eerste echte tik.
+function primeAudioFromGesture(){ unlockAudio(); }
+document.addEventListener("pointerdown", primeAudioFromGesture, {capture:true, passive:true});
+document.addEventListener("touchstart", primeAudioFromGesture, {capture:true, passive:true});
+document.addEventListener("touchend", primeAudioFromGesture, {capture:true, passive:true});
+document.addEventListener("click", primeAudioFromGesture, {capture:true, passive:true});
+
+function soundKey(){
+ return currentPlayer ? "tn_sound_"+currentPlayer : "tn_sound_global";
+}
+function loadSoundSetting(){
+ let saved=getRaw(soundKey());
+ soundEnabled = saved !== "off";
+ updateSoundIcon();
+}
+function updateSoundIcon(){
+ let el=$("soundToggle");
+ if(!el) return;
+ el.textContent = soundEnabled ? "🔊" : "🔇";
+ el.title = soundEnabled ? "Geluid aan" : "Geluid uit";
+ el.setAttribute("aria-label", soundEnabled ? "Geluid aan" : "Geluid uit");
+}
+function toggleSound(){
+ soundEnabled = !soundEnabled;
+ setRaw(soundKey(), soundEnabled ? "on" : "off");
+ updateSoundIcon();
+ if(soundEnabled){
+   unlockAudio();
+   setTimeout(()=>startBell(),30);
+ }
+}
+
+function safeDocId(name){
+ return encodeURIComponent((name||"").toString()).replace(/\./g,"%2E");
+}
+
+function showCloudStatus(txt){
+ if($("cloudStatus")) $("cloudStatus").textContent=txt || "";
+ let dot=$("statusDot");
+ if(!dot) return;
+
+ dot.classList.remove("online","offline","connecting","reconnect");
+ let lower=(txt||"").toLowerCase();
+
+ // bezig met verbinden
+ if(lower.includes("verbinden") || lower.includes("testen")){
+   dot.classList.add("connecting");
+   return;
+ }
+
+ // verbonden
+ if(lower.includes("verbonden") || lower.includes("firebase ok")){
+   cloudEverConnected=true;
+   dot.classList.add("online");
+
+   if(wasOffline){
+     dot.classList.add("reconnect");
+     setTimeout(()=>dot.classList.remove("reconnect"),600);
+   }
+
+   wasOffline=false;
+   return;
+ }
+
+ // tijdelijke hapering na succesvolle verbinding: rustig groen houden
+ if(cloudEverConnected && (
+   lower.includes("tijdelijk offline") ||
+   lower.includes("laden lukt niet") ||
+   lower.includes("opslaan lukt niet") ||
+   lower.includes("geen reactie")
+ )){
+   dot.classList.add("online");
+   return;
+ }
+
+ // echt offline/fout
+ dot.classList.add("offline");
+ wasOffline=true;
+}
+
+function withTimeout(promise, ms, label){
+ return Promise.race([
+   promise,
+   new Promise((_,reject)=>setTimeout(()=>reject(new Error((label||"Verzoek")+" duurt te lang")),ms))
+ ]);
+}
+async function safeFetch(url, opts){
+ return await withTimeout(fetch(url, opts), 5000, "Firebase verbinding");
+}
+
+function fsValue(v){
+ if(v===null || v===undefined) return {nullValue:null};
+ if(typeof v==="string") return {stringValue:v};
+ if(typeof v==="number") return Number.isInteger(v)?{integerValue:String(v)}:{doubleValue:v};
+ if(typeof v==="boolean") return {booleanValue:v};
+ if(Array.isArray(v)) return {arrayValue:{values:v.map(fsValue)}};
+ if(typeof v==="object"){
+   let fields={};
+   Object.keys(v).forEach(k=>fields[k]=fsValue(v[k]));
+   return {mapValue:{fields}};
+ }
+ return {stringValue:String(v)};
+}
+function fsFields(obj){
+ let fields={};
+ Object.keys(obj).forEach(k=>fields[k]=fsValue(obj[k]));
+ return {fields};
+}
+function fsReadValue(v){
+ if(!v) return null;
+ if("stringValue" in v) return v.stringValue;
+ if("integerValue" in v) return Number(v.integerValue);
+ if("doubleValue" in v) return Number(v.doubleValue);
+ if("booleanValue" in v) return !!v.booleanValue;
+ if("nullValue" in v) return null;
+ if("arrayValue" in v) return (v.arrayValue.values||[]).map(fsReadValue);
+ if("mapValue" in v){
+   let out={};
+   let f=v.mapValue.fields||{};
+   Object.keys(f).forEach(k=>out[k]=fsReadValue(f[k]));
+   return out;
+ }
+ return null;
+}
+function fsDocToObj(doc){
+ let f=(doc&&doc.fields)||{};
+ let out={};
+ Object.keys(f).forEach(k=>out[k]=fsReadValue(f[k]));
+ return out;
+}
+async function fsListPlayers(){
+ let url=FIRESTORE_BASE+"/players?key="+FIREBASE_API_KEY;
+ let res=await safeFetch(url,{cache:"no-store"});
+ if(!res.ok) throw new Error("Firestore lezen mislukt: "+res.status);
+ let data=await res.json();
+ return (data.documents||[]).map(fsDocToObj).filter(x=>x&&x.name);
+}
+async function fsSetPlayer(name,data,merge=true){
+ let id=safeDocId(name);
+ let url=FIRESTORE_BASE+"/players/"+id+"?key="+FIREBASE_API_KEY;
+ let opts={method:merge?"PATCH":"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(fsFields(data))};
+ let res=await safeFetch(url,opts);
+ if(!res.ok){let t=await res.text();throw new Error("Firestore schrijven mislukt: "+res.status+" "+t);}
+ return await res.json();
+}
+async function fsDeletePlayer(name){
+ let id=safeDocId(name);
+ let url=FIRESTORE_BASE+"/players/"+id+"?key="+FIREBASE_API_KEY;
+ let res=await safeFetch(url,{method:"DELETE"});
+ if(!res.ok && res.status!==404) throw new Error("Firestore verwijderen mislukt: "+res.status);
+}
+function serverNow(){return new Date().toISOString();}
+function baseKey(key){return "tn_global_"+key}
+function userKey(key){return "tn_"+currentPlayer+"_"+key}
+function getRaw(k){try{return localStorage.getItem(k)}catch(e){return null}}
+function setRaw(k,v){try{localStorage.setItem(k,v)}catch(e){}}
+function get(k){return getRaw(userKey(k))}
+function set(k,v){
+ setRaw(userKey(k),v);
+ queueCloudSave(k,v);
+}
+function json(k,def){try{return JSON.parse(get(k)||JSON.stringify(def))}catch(e){return def}}
+function globalJson(k,def){try{return JSON.parse(getRaw(baseKey(k))||JSON.stringify(def))}catch(e){return def}}
+function setGlobal(k,v){setRaw(baseKey(k),JSON.stringify(v))}
+function queueCloudSave(k,v){
+ if(!currentPlayer) return;
+ saveQueue[k]=v;
+ clearTimeout(saveTimer);
+ saveTimer=setTimeout(flushCloudSave,250);
+}
+async function flushCloudSave(){
+ if(!currentPlayer || !Object.keys(saveQueue).length) return;
+ let current=playerByName(currentPlayer)||{name:currentPlayer,pin:getRaw("tn_"+currentPlayer+"_pin")||"2026",avatar:"🥷",data:{}};
+ current.data=current.data||{};
+ Object.keys(saveQueue).forEach(k=>current.data[k]=saveQueue[k]);
+ saveQueue={};
+ try{
+   current.updatedAt=serverNow();
+   await fsSetPlayer(currentPlayer,current,true);
+   showCloudStatus("☁️ Verbonden");
+ }catch(e){
+   console.warn("Cloud save failed",e);
+   showCloudStatus("☁️ Opslaan lukt niet: "+e.message);
+ }
+}
+async function loadPlayerFromCloud(name){
+ try{
+   let list=await fsListPlayers();
+   remotePlayersCache=list;
+   let d=list.find(x=>x.name===name);
+   if(!d) return;
+   if(d.data){
+     Object.keys(d.data).forEach(k=>setRaw("tn_"+name+"_"+k,d.data[k]));
+   }
+   if(d.pin) setRaw("tn_"+name+"_pin",d.pin);
+   showCloudStatus("☁️ Verbonden");
+ }catch(e){
+   console.warn("Cloud load failed",e);
+   showCloudStatus("☁️ Laden lukt niet: "+e.message);
+ }
+}
+async function migrateLocalPlayersToCloud(){
+ let raw=globalJson("players",[]);
+ if(!Array.isArray(raw) || !raw.length) return;
+ for(let item of raw){
+   let name="",pin="2026",avatar="🥷";
+   if(typeof item==="string") name=item;
+   else if(item && typeof item==="object"){name=(item.name||item.naam||"").toString();pin=(item.pin||"2026").toString();avatar=item.avatar||"🥷";}
+   name=name.trim();
+   if(!name) continue;
+   let data={};
+   Object.keys(localStorage).forEach(k=>{
+     if(k.startsWith("tn_"+name+"_")){
+       data[k.replace("tn_"+name+"_","")]=localStorage.getItem(k);
+     }
+   });
+   try{ await fsSetPlayer(name,{name,pin,avatar,data,updatedAt:serverNow()},true); }
+   catch(e){ console.warn("Migration failed",e); }
+ }
+}
+async function startCloudListener(){
+ showCloudStatus("☁️ Verbinden...");
+ setTimeout(()=>{
+   if($("cloudStatus") && $("cloudStatus").textContent.indexOf("Verbinden")>-1){
+     showCloudStatus("☁️ Geen reactie van Firebase. App werkt lokaal.");
+     playersLoaded=false;
+     renderPlayers();
+   }
+ },5500);
+
+ if(typeof fetch==="undefined"){
+   showCloudStatus("☁️ Browser te oud: fetch ontbreekt");
+   renderPlayers();
+   return;
+ }
+ try{
+   remotePlayersCache=await fsListPlayers();
+   playersLoaded=true;
+   showCloudStatus("☁️ Verbonden");
+   renderPlayers();
+
+   setInterval(async()=>{
+     try{
+       remotePlayersCache=await fsListPlayers();
+       playersLoaded=true;
+       if($("cloudStatus")) showCloudStatus("☁️ Verbonden");
+       renderPlayers();
+     }catch(e){
+       if($("cloudStatus")) showCloudStatus("☁️ Tijdelijk offline");
+     }
+   },12000);
+ }catch(e){
+   console.error("Cloud connect failed",e);
+   playersLoaded=false;
+   showCloudStatus("☁️ Firebase fout: "+e.message);
+   renderPlayers();
+ }
+}
+
+
+
+function players(){
+ if(playersLoaded) return remotePlayersCache.slice();
+ let raw=globalJson("players",[]);
+ if(!Array.isArray(raw)) raw=[];
+ let cleaned=[];
+ raw.forEach(item=>{
+   if(typeof item==="string"){
+     cleaned.push({name:item,pin:"2026",avatar:"🥷",data:{subscription:"Starter"}});
+   }else if(item && typeof item==="object"){
+     let name=(item.name||item.naam||"").toString().trim();
+     if(name) cleaned.push({name:name,pin:(item.pin||"2026").toString(),avatar:item.avatar||"🥷",data:item.data||{subscription:"Starter"}});
+   }
+ });
+ let seen={};
+ return cleaned.filter(p=>{
+   let k=(p.name||"").toLowerCase();
+   if(!k || seen[k]) return false;
+   seen[k]=true;
+   return true;
+ });
+}
+
+function playerByName(name){
+ return players().find(p=>p && p.name===name);
+}
+
+function savePlayers(p){
+ setGlobal("players",p);
+}
+
+
+
+
+
+
+
+
+
+
+
+function playerSearchQuery(){
+ let el=$("playerSearch");
+ return el ? el.value.trim().toLowerCase() : "";
+}
+function escapeHtml(s){
+ return String(s).replace(/[&<>"']/g,function(m){return {"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[m];});
+}
+function getPlayerSessionsForLogin(p,name){
+ let raw=null;
+ if(p && p.data && p.data.sessions!==undefined) raw=p.data.sessions;
+ if(raw===null || raw===undefined) raw=getRaw("tn_"+name+"_sessions")||"[]";
+ if(Array.isArray(raw)) return raw;
+ try{return JSON.parse(raw||"[]")}catch(e){return []}
+}
+function lastPlayedText(p,name){
+ let arr=getPlayerSessionsForLogin(p,name);
+ if(arr && arr.length && arr[0] && arr[0].date) return arr[0].date;
+ return "Nog niet gespeeld";
+}
+
+function renderPlayers(){
+ let grid=$("playerGrid");
+ if(!grid) return;
+
+ let all=players();
+ let q=playerSearchQuery();
+ let p=q ? all.filter(x=>((x && x.name ? x.name : "").toString().toLowerCase().includes(q))) : all;
+
+ let count=$("playerSearchCount");
+ if(count){
+   count.textContent = all.length ? "Totaal spelers: "+all.length : "";
+ }
+
+ if(!all.length){
+   grid.innerHTML="<div class='session'><b>Nog geen spelers</b><br>Maak eerst een speler aan.</div>";
+   return;
+ }
+ if(!p.length){
+   grid.innerHTML="<div class='noPlayersFound'>Geen speler gevonden met deze naam.</div>";
+   return;
+ }
+
+ grid.innerHTML=p.map(x=>{
+   let name=(x && x.name ? x.name : "Speler").toString();
+   let last=lastPlayedText(x,name);
+   return "<button class='playerCard playerBtn' data-name='"+encodeURIComponent(name)+"' type='button'>"+
+     "<div class='playerAvatar'>🥷</div>"+
+     "<div class='playerMain'>"+
+       "<div class='playerName'>"+escapeHtml(name)+"</div>"+
+       "<div class='playerLast'>Laatst gespeeld: "+escapeHtml(last)+"</div>"+
+     "</div>"+
+   "</button>";
+ }).join("");
+
+ document.querySelectorAll(".playerBtn").forEach(btn=>{
+   btn.addEventListener("click",()=>askPin(decodeURIComponent(btn.dataset.name)));
+ });
+}
+
+function askPin(name){
+ pendingPlayer=name;
+ $("pinTitle").textContent="Pincode";
+ $("pinText").textContent="Voer de code in voor "+name+".";
+ $("pinInput").value="";
+ $("pinModal").classList.remove("hide");
+ setTimeout(()=>$("pinInput").focus(),50);
+}
+
+async function openPlayer(name){
+ currentPlayer=name;
+ setRaw(baseKey("currentPlayer"),name);
+ await loadPlayerFromCloud(name);
+ loadNames();
+ $("activePlayerLabel").textContent=name;
+ ["login","rules","history","end","game"].forEach(id=>$(id).classList.add("hide"));
+ $("start").classList.remove("hide");
+ loadSoundSetting();
+ updateStart();
+ showBottomNav(true);setBottomActive('home');/* v103: geen welkom-popup */
+}
+
+
+
+
+
+function makeWelcomeSums(){
+ let box=$("welcomeSums");
+ if(!box) return;
+ box.innerHTML="";
+ let sums=[
+   [2,4],[3,6],[4,8],[5,7],[6,9],[7,8],[8,9],[9,12]
+ ];
+ sums=shuffle(sums).slice(0,7);
+ sums.forEach((pair,i)=>{
+   let el=document.createElement("div");
+   el.className="welcomeSum";
+   el.textContent=pair[0]+" × "+pair[1];
+   el.style.setProperty("--x",(Math.random()*260-130)+"px");
+   el.style.setProperty("--y",(Math.random()*250-155)+"px");
+   el.style.setProperty("--r",(Math.random()*90-45)+"deg");
+   el.style.animationDelay=(0.18+i*0.07)+"s";
+   box.appendChild(el);
+ });
+}
+function dismissWelcomeLayer(){
+ hideWelcomeLayer();
+ try{document.getElementById("start").scrollIntoView({behavior:"smooth",block:"start"});}catch(e){}
+}
+
+function welcomeSessionKey(){
+ return "tn_welcome_shown_"+(currentPlayer||"global");
+}
+function showWelcomeLayer(){
+ if(!currentPlayer) return;
+ if(sessionStorage.getItem(welcomeSessionKey())==="1") return;
+ sessionStorage.setItem(welcomeSessionKey(),"1");
+ let layer=$("welcomeLayer");
+ if(!layer) return;
+ if($("welcomeTitle")) $("welcomeTitle").textContent="Welkom terug, "+currentPlayer+"!";
+ if($("welcomeSubtitle")) $("welcomeSubtitle").textContent="Wat goed dat je weer komt oefenen 💪";
+ makeWelcomeSums();
+ layer.classList.remove("hide");
+ try{ unlockAudio(); }catch(e){}
+}
+function hideWelcomeLayer(){
+ let layer=$("welcomeLayer");
+ if(layer) layer.classList.add("hide");
+}
+
+async function createPlayer(){
+ let name=$("newName").value.trim();
+ let pin=$("newPin").value.trim();
+ if($("newPlayerError")) $("newPlayerError").textContent="";
+
+ if(!name){
+   if($("newPlayerError")) $("newPlayerError").textContent="Vul eerst een naam in.";
+   else alert("Vul eerst een naam in.");
+   return;
+ }
+ if(!/^[0-9]{4}$/.test(pin)){
+   if($("newPlayerError")) $("newPlayerError").textContent="Kies een pincode van precies 4 cijfers.";
+   else alert("Kies een pincode van precies 4 cijfers.");
+   return;
+ }
+ if(players().some(x=>x && x.name && x.name.toLowerCase()===name.toLowerCase())){
+   if($("newPlayerError")) $("newPlayerError").textContent="Deze speler bestaat al.";
+   else alert("Deze speler bestaat al.");
+   return;
+ }
+
+ let player={
+   name:name,
+   pin:pin,
+   avatar:"🥷",
+   data:{
+     subscription:"Starter",
+     sessions:"[]",
+     names:JSON.stringify({kind:name,vriend1:"Sam",vriend2:"Noor",familie:"Oma",teacherRole:"Juf",teacherName:"Anna"}),
+     weak_tables:"{}"
+   },
+   createdAt:serverNow(),
+   updatedAt:serverNow()
+ };
+
+ try{
+   await fsSetPlayer(name,player,true);
+   remotePlayersCache=remotePlayersCache.filter(p=>p.name!==name);
+   remotePlayersCache.push(player);
+   playersLoaded=true;
+   showCloudStatus("☁️ Verbonden");
+ }catch(e){
+   let local=globalJson("players",[]);
+   local.push(player);
+   savePlayers(local);
+   showCloudStatus("☁️ Lokaal opgeslagen. Firebase fout: "+e.message);
+ }
+
+ setRaw("tn_"+name+"_pin",pin);
+ setRaw("tn_"+name+"_subscription","Starter");
+ setRaw("tn_"+name+"_sessions","[]");
+ setRaw("tn_"+name+"_names",JSON.stringify({kind:name,vriend1:"Sam",vriend2:"Noor",familie:"Oma",teacherRole:"Juf",teacherName:"Anna"}));
+ setRaw("tn_"+name+"_weak_tables","{}");
+
+ $("newPlayerModal").classList.add("hide");
+ renderPlayers();
+ openPlayer(name);
+}
+
+function saveNames(){
+ let data={kind:$("kind").value||"",vriend1:$("vriend1").value||"",vriend2:$("vriend2").value||"",familie:$("familie").value||"",teacherRole:$("teacherRole").value||"Juf",teacherName:$("teacherName").value||""};
+ set("names",JSON.stringify(data));
+}
+function loadNames(){
+ let n=json("names",null);
+ if(!n){$("kind").value=currentPlayer;$("vriend1").value="Sam";$("vriend2").value="Noor";$("familie").value="Oma";$("teacherRole").value="Juf";$("teacherName").value="Anna";return}
+ $("kind").value=n.kind||currentPlayer;$("vriend1").value=n.vriend1||"Sam";$("vriend2").value=n.vriend2||"Noor";$("familie").value=n.familie||"Oma";$("teacherRole").value=n.teacherRole||"Juf";$("teacherName").value=n.teacherName||"Anna";
+}
+
+function selectedKey(){return "hs_"+tables.slice().sort((a,b)=>a-b).join("_")}
+function hs(){return Number(get(selectedKey())||0)}
+function shuffle(a){let b=a.slice();for(let i=b.length-1;i>0;i--){let j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]]}return b}
+function sample(a,n){return shuffle(a).slice(0,n)}
+function sessions(){return json("sessions",[])}
+function saveSession(s){let arr=sessions();arr.unshift(s);arr=arr.slice(0,80);set("sessions",JSON.stringify(arr))}
+function last7(arr){let now=Date.now(),week=7*24*60*60*1000;return arr.filter(s=>s.dateISO && now-new Date(s.dateISO).getTime()<=week)}
+function weakData(){return json("weak_tables",{})}
+function addWeak(table){let w=weakData();w[table]=(w[table]||0)+1;set("weak_tables",JSON.stringify(w));wrongThisSession[table]=(wrongThisSession[table]||0)+1}
+
+function subOrder(){return ["Starter","Bronze","Zilver","Goud"]}
+function subscriptionLevel(){return get("subscription")||"Starter"}
+function setSubscriptionLevel(level){set("subscription",level)}
+function downgrade(level){let o=subOrder(),i=o.indexOf(level);return o[Math.max(0,i-1)]}
+function upgradeAllowed(current,target){return subOrder().indexOf(target)>subOrder().indexOf(current)}
+
+function levelIndex(level){
+ return subOrder().indexOf(level);
+}
+function bestOfLevels(a,b){
+ let o=subOrder();
+ return o[Math.max(levelIndex(a),levelIndex(b))] || "Starter";
+}
+function applyChallengeStatus(currentSub, playedLevel, award){
+ // Belangrijk: je kunt nooit hoger stijgen dan het level dat je speelt.
+ // Bronze wedstrijd gehaald => maximaal Bronze.
+ // Zilver wedstrijd gehaald => maximaal Zilver.
+ // Goud wedstrijd gehaald => maximaal Goud.
+ if(!isMedal(award)){
+   return downgrade(currentSub);
+ }
+ if(levelIndex(playedLevel)>levelIndex(currentSub)){
+   return playedLevel;
+ }
+ return currentSub;
+}
+
+function challengeTables(level){
+ if(level==="Starter")return [1,2,10];
+ if(level==="Bronze")return [1,2,3,4,5,10];
+ if(level==="Zilver")return [1,2,3,4,5,6,7,8,9,10];
+ return [1,2,3,4,5,6,7,8,9,10,11,12];
+}
+function getMode(){return document.querySelector('input[name="mode"]:checked').value}
+function getTables(){
+ if(getMode()==="single") return [Number($("singleTable").value)];
+ return challengeTables($("challengeLevel").value);
+}
+function sessionAward(bad,total){if(bad===0)return "🏆 Beker"; if(bad<=2)return "🏅 Medaille"; return "👍 Duim"}
+function isMedal(award){return award==="🏆 Beker"||award==="🏅 Medaille"}
+
+function weekMissionStartISO(){
+ let v=get("weekMissionStartISO");
+ if(!v){
+   v=new Date().toISOString();
+   set("weekMissionStartISO",v);
+ }
+ return v;
+}
+function weekMissionEndDate(){
+ let start=new Date(weekMissionStartISO());
+ let end=new Date(start.getTime()+7*24*60*60*1000);
+ return end;
+}
+function weekMissionDeadlineText(){
+ let end=weekMissionEndDate();
+ return end.toLocaleDateString("nl-NL",{weekday:"long",day:"numeric",month:"long"})+" om "+end.toLocaleTimeString("nl-NL",{hour:"2-digit",minute:"2-digit"});
+}
+function weekMissionExpired(){
+ return Date.now()>weekMissionEndDate().getTime();
+}
+function resetWeekMissionIfExpired(){
+ if(weekMissionExpired()){
+   set("weekMissionStartISO",new Date().toISOString());
+ }
+}
+
+function weeklyGoalStats(){
+ let arr=last7(sessions()),sub=subscriptionLevel(),singleGood=new Set(),challengeGood=0,challengePlayed=0;
+ arr.forEach(s=>{
+   if(!s) return;
+   let mode=(s.mode||"").toString();
+   let isSingle=(mode==="Oefenen" || mode==="single" || mode==="Los oefenen");
+   let isChallenge=(mode==="Challenge" || mode==="Ninja-statuswedstrijd" || mode==="challenge");
+   if(isSingle && (s.tables||[]).length===1 && isMedal(s.award)) singleGood.add(String(s.tables[0]));
+   if(isChallenge){
+     challengePlayed++;
+     if(isMedal(s.award)) challengeGood++;
+   }
+ });
+ return {sub:sub, singleGood:singleGood.size||0, challengePlayed:challengePlayed||0, challengeGood:challengeGood||0};
+}
+function enforceRetention(){
+ let sub=subscriptionLevel(); if(sub==="Starter")return "";
+ let arr=last7(sessions()); if(!arr.length)return "";
+ let g=weeklyGoalStats();
+ if(g.challengeMedal<1 && sessions().some(s=>s.mode==='Challenge')){let lower=downgrade(sub);setSubscriptionLevel(lower);return "Je haalde geen medaille of beker in je "+sub+" wedstrijd. Je zakt terug naar "+lower+"."}
+ if(g.singleGood<3 && arr.length>=3){let lower=downgrade(sub);setSubscriptionLevel(lower);return "Je oefende deze week minder dan 3 losse tafels met medaille/beker. Je zakt terug naar "+lower+"."}
+ return "";
+}
+
+function weekDeadlineText(){
+ let arr=sessions().filter(s=>s.dateISO).sort((a,b)=>new Date(a.dateISO)-new Date(b.dateISO));
+ let start=arr.length ? new Date(arr[0].dateISO) : new Date();
+ let end=new Date(start.getTime()+7*24*60*60*1000);
+ try{
+   return end.toLocaleDateString("nl-NL",{weekday:"long",day:"numeric",month:"long"})+" om "+end.toLocaleTimeString("nl-NL",{hour:"2-digit",minute:"2-digit"});
+ }catch(e){
+   return end.toLocaleString("nl-NL");
+ }
+}
+
+
+function safeNum(v){
+ v=Number(v);
+ return Number.isFinite(v)?v:0;
+}
+function weekCounts(){
+ let g=weeklyGoalStats();
+ return {
+   singleGood:safeNum(g.singleGood),
+   challengeGood:safeNum(g.challengeGood),
+   challengePlayed:safeNum(g.challengePlayed),
+   sub:g.sub||subscriptionLevel()
+ };
+}
+
+function renderWeekGoal(){
+ if(!$("weekGoalBox"))return;
+ let g=weekCounts();
+ let complete=(safeNum(g.singleGood)>=3 && safeNum(g.challengeGood)>=1);
+ $("weekGoalBox").innerHTML=
+  "<div class='missionRows'>"+
+    "<div class='missionRow'><span class='checkBox "+(safeNum(g.challengeGood)>=1?"done":"")+"'>"+(safeNum(g.challengeGood)>=1?"✓":"")+"</span><span>1 wedstrijd afgerond met een beker of medaille</span><b>"+Math.min(safeNum(g.challengeGood),1)+"/1</b></div>"+
+    "<div class='missionRow'><span class='checkBox "+(safeNum(g.singleGood)>=3?"done":"")+"'>"+(safeNum(g.singleGood)>=3?"✓":"")+"</span><span>3 losse tafels oefenen</span><b>"+Math.min(safeNum(g.singleGood),3)+"/3</b></div>"+
+    "<div class='missionRow statusLine'><span>Je hebt nog tot:</span><b>"+weekDeadlineText()+"</b></div>"+
+    "<button class='weekSuccessBtn "+(complete?"show":"")+"'>✅ Geslaagd!</button>"+
+  "</div>";
+}
+function rankEmoji(level){return level==="Goud"?"🥷🏆":level==="Zilver"?"🥷🥈":level==="Bronze"?"🥷🥉":"🥷⚪"}
+function updateNinja(){
+ let sub=subscriptionLevel();
+ $("rank").textContent=sub;$("rankLabel").textContent=sub;$("ninja").textContent=rankEmoji(sub);
+ $("ninja").className="ninja "+sub.toLowerCase();
+ $("progress").style.width=questions.length?((idx/questions.length)*100)+"%":"0%";
+}
+
+
+function harderFactors(){return [3,4,5,6,7,8,9,10]}
+function challengeFactors(){
+ return getMode()==="challenge" && $("challengeLevel").value==="Goud"
+   ? [2,3,4,5,6,7,8,9,10,11,12]
+   : [2,3,4,5,6,7,8,9,10];
+}
+function weightedTables(){
+ let w=weakData(),arr=tables.slice();
+ tables.forEach(t=>{
+   let times=Math.min(3,w[t]||0);
+   for(let i=0;i<times;i++)arr.push(t);
+ });
+ return arr.length?arr:tables.slice();
+}
+
+function score(remainingSeconds){
+ let remaining=Math.max(0, Number(remainingSeconds)||0);
+ let penalty=bad*10;
+ return Math.max(0, remaining-penalty);
+}
+function plural(n,one,many){return n===1?one:many}
+function zinMandjes(who,n,t){return who+" heeft "+n+" "+plural(n,"mandje","mandjes")+". In elk mandje zit "+t+" "+plural(t,"knikker","knikkers")+". Hoeveel "+plural(t,"knikker","knikkers")+" samen?"}
+function zinZakjes(who,n,t){return who+" heeft "+n+" "+plural(n,"zakje","zakjes")+". In elk zakje zit "+t+" "+plural(t,"snoepje","snoepjes")+". Hoeveel "+plural(t,"snoepje","snoepjes")+" samen?"}
+function zinSchool(who,n,t){return who+" heeft "+n+" "+plural(n,"kind","kinderen")+". Elk kind maakte "+t+" "+plural(t,"tekening","tekeningen")+". Hoeveel "+plural(t,"tekening","tekeningen")+" samen?"}
+
+
+
+
+
+
+function isRealSequenceTable(t){ return Number(t)>1; }
+function availableSequenceTables(){
+ let arr=(tables||[]).map(Number).filter(isRealSequenceTable);
+ if(!arr.length) arr=[2,3,4,5,6,7,8,9,10,11,12];
+ return arr;
+}
+function makeSequenceQuestion(t,start){
+ t=Number(t); start=Number(start);
+ let a=start*t,b=(start+1)*t,c=(start+2)*t,ans=(start+3)*t;
+ return {type:"choice",qKind:"sequence",title:"🔢 Maak de reeks af",table:t,n:start,text:a+", "+b+", "+c+", …",answer:ans,show:a+", "+b+", "+c+", "+ans};
+}
+function makeRecognizeQuestion(t){
+ t=Number(t);
+ let seq=[1,2,3,4,5].map(x=>x*t).join(", ");
+ return {type:"choice",qKind:"recognize",title:"🔎 Herken de tafel",table:t,n:1,text:seq+"  = tafel van …",answer:t,show:"tafel van "+t};
+}
+
+function makeQuestion(t,n,type){
+ if(type==="sum")return {type:"choice",title:"🎲 Reken snel",table:t,n:n,text:n+" × "+t+" = ?",answer:n*t,show:n+" × "+t}
+ if(type==="missing")return {type:"choice",title:"🧩 Welk getal ontbreekt?",table:t,n:n,text:"? × "+t+" = "+(n*t),answer:n,show:n+" × "+t+" = "+(n*t)}
+ if(type==="sequence")return makeSequenceQuestion(t,1)
+ if(type==="recognize")return makeRecognizeQuestion(t)
+ if(type==="teacher")return {type:"choice",title:"📚 Schoolverhaaltje",table:t,n:n,text:zinSchool(names.teacher,n,t),answer:n*t,show:n+" × "+t}
+ if(type==="family")return {type:"choice",title:"📚 Verhaaltje",table:t,n:n,text:zinZakjes(names.familie,n,t),answer:n*t,show:n+" × "+t}
+ return {type:"choice",title:"📚 Verhaaltje",table:t,n:n,text:zinMandjes(names.vriend1,n,t),answer:n*t,show:n+" × "+t}
+}
+
+function makeQuestions(){
+ let qs=[],mode=getMode();
+
+ if(mode==="single"){
+   let t=Number(tables[0]);
+
+   for(let n=1;n<=10;n++){
+     qs.push({type:"choice",phase:"drill",title:"📣 Tafel opdreunen",table:t,n:n,text:n+" × "+t+" = ?",answer:n*t,show:n+" × "+t});
+   }
+   for(let n=10;n>=1;n--){
+     qs.push({type:"choice",phase:"drill",title:"🔁 Terug opdreunen",table:t,n:n,text:n+" × "+t+" = ?",answer:n*t,show:n+" × "+t});
+   }
+
+   if(isRealSequenceTable(t)){
+     let starts=shuffle([1,2,3,4,5,6,7,8]).slice(0,2);
+     starts.forEach(start=>qs.push(makeSequenceQuestion(t,start)));
+   }
+
+   let extra=[];
+   sample(harderFactors(),10).forEach(n=>{
+     extra.push(makeQuestion(t,n,"sum"));
+     extra.push(makeQuestion(t,n,"missing"));
+   });
+
+   return qs.concat(shuffle(extra)).slice(0,40);
+ }
+
+ let wt=weightedTables().map(Number);
+ let recCount=0, seqCount=0, usedSeqKeys={}, seqTables=availableSequenceTables();
+
+ for(let k=0;k<100 && qs.length<40;k++){
+   let t=Number(wt[Math.floor(Math.random()*wt.length)]);
+   let fs=challengeFactors();
+   let n=Number(fs[Math.floor(Math.random()*fs.length)]);
+   let r=Math.random();
+
+   if(r<0.16 && recCount<2){
+     qs.push(makeRecognizeQuestion(t));
+     recCount++;
+     continue;
+   }
+
+   if(r<0.28 && seqCount<2){
+     let seqT=shuffle(seqTables)[0];
+     let starts=shuffle([1,2,3,4,5,6,7,8]);
+     let chosen=null;
+     for(let i=0;i<starts.length;i++){
+       let key=seqT+"_"+starts[i];
+       if(!usedSeqKeys[key]){ chosen=starts[i]; usedSeqKeys[key]=true; break; }
+     }
+     if(chosen!==null){
+       qs.push(makeSequenceQuestion(seqT,chosen));
+       seqCount++;
+       continue;
+     }
+   }
+
+   if(r<0.42 && tables.includes(n) && n!==t){
+     qs.push({type:"choice",title:"🔁 Tafel-tweeling",table:t,n:n,text:n+" × "+t+" = ?",answer:n*t,show:n+" × "+t});
+     if(qs.length<40) qs.push({type:"choice",title:"🔁 Tafel-tweeling",table:n,n:t,text:t+" × "+n+" = ?",answer:t*n,show:t+" × "+n+" = "+n+" × "+t});
+     continue;
+   }
+
+   let type=r<0.68?"sum":r<0.84?"missing":["story","family","teacher"][Math.floor(Math.random()*3)];
+   qs.push(makeQuestion(t,n,type));
+ }
+ return qs.slice(0,40);
+}
+
+function updateStart(){
+ tables=getTables();
+ let mode=getMode()==="single"?"Los oefenen":"Ninja-statuswedstrijd";
+ $("startHs").textContent=mode+" — "+tables.map(t=>"tafel "+t).join(", ")+" | Highscore: "+(hs()||"-");
+ renderWeekGoal();updateNinja();
+}
+
+function audioCtx(){
+ try{
+   if(!window._audioCtx) window._audioCtx=new (window.AudioContext||window.webkitAudioContext)();
+   if(window._audioCtx.state==="suspended" && window._audioCtx.resume) window._audioCtx.resume();
+   return window._audioCtx;
+ }catch(e){return null}
+}
+function unlockAudio(){
+ try{
+   let c=audioCtx();
+   if(!c) return;
+   if(c.state==="suspended" && c.resume) c.resume();
+   // iPhone/Safari priming: een bijna-onhoorbaar tikje na een gebruikersactie.
+   if(!window._audioPrimed){
+     let o=c.createOscillator(),g=c.createGain();
+     o.type="sine";
+     o.frequency.value=440;
+     g.gain.setValueAtTime(0.0001,c.currentTime);
+     o.connect(g);g.connect(c.destination);
+     o.start(c.currentTime);
+     o.stop(c.currentTime+0.03);
+     window._audioPrimed=true;
+   }
+ }catch(e){}
+}
+function playTone(freq,type,start,duration,gain){let c=audioCtx();if(!c)return;let o=c.createOscillator(),g=c.createGain();o.connect(g);g.connect(c.destination);o.frequency.value=freq;o.type=type;let now=c.currentTime+start;g.gain.setValueAtTime(.001,now);g.gain.linearRampToValueAtTime(gain,now+.02);g.gain.exponentialRampToValueAtTime(.001,now+duration);o.start(now);o.stop(now+duration+.03)}
+function whistle(){playTone(900,"sine",0,.18,.18);playTone(1250,"sine",.10,.20,.18);playTone(1700,"sine",.24,.22,.14)}
+
+function startBell(){
+ if(!soundEnabled) return;
+ unlockAudio();
+ playTone(784,"sine",0,.13,.22);
+ playTone(1046,"sine",.11,.15,.20);
+ playTone(1318,"triangle",.24,.20,.16);
+ playTone(1568,"sine",.38,.22,.12);
+}
+
+function fart(){
+ let c=audioCtx();if(!c)return;
+
+ // Hardere grappige scheet: 2 lagen + korte brom
+ let master=c.createGain();
+ master.connect(c.destination);
+ master.gain.setValueAtTime(.001,c.currentTime);
+ master.gain.linearRampToValueAtTime(.55,c.currentTime+.04);
+ master.gain.exponentialRampToValueAtTime(.001,c.currentTime+.72);
+
+ let f=c.createBiquadFilter();
+ f.type="lowpass";
+ f.frequency.setValueAtTime(360,c.currentTime);
+ f.frequency.exponentialRampToValueAtTime(140,c.currentTime+.55);
+ f.connect(master);
+
+ let o1=c.createOscillator();
+ o1.type="sawtooth";
+ o1.frequency.setValueAtTime(135,c.currentTime);
+ o1.frequency.exponentialRampToValueAtTime(42,c.currentTime+.58);
+ o1.connect(f);
+ o1.start(c.currentTime);
+ o1.stop(c.currentTime+.68);
+
+ let o2=c.createOscillator();
+ o2.type="square";
+ o2.frequency.setValueAtTime(82,c.currentTime+.08);
+ o2.frequency.exponentialRampToValueAtTime(36,c.currentTime+.62);
+ let g2=c.createGain();
+ g2.gain.setValueAtTime(.001,c.currentTime+.08);
+ g2.gain.linearRampToValueAtTime(.30,c.currentTime+.12);
+ g2.gain.exponentialRampToValueAtTime(.001,c.currentTime+.62);
+ o2.connect(g2);g2.connect(f);
+ o2.start(c.currentTime+.08);
+ o2.stop(c.currentTime+.68);
+}
+
+
+function playWarningSound(){
+ if(!soundEnabled) return;
+ let c=audioCtx();
+ if(!c) return;
+ for(let i=0;i<3;i++){
+   setTimeout(()=>{
+     playTone(1200,"square",0,0.15,0.20);
+   }, i*200);
+ }
+}
+
+
+function canPlaySound(){
+  return !(typeof soundEnabled !== "undefined" && soundEnabled === false);
+}
+function playStartSound(){
+  if(!canPlaySound()) return;
+  unlockAudio();
+  startBell();
+}
+function playGoodSound(){
+  if(!canPlaySound()) return;
+  unlockAudio();
+  whistle();
+}
+function playWrongSound(){
+  if(!canPlaySound()) return;
+  unlockAudio();
+  fart();
+}
+
+function sound(ok=true){
+ if(!canPlaySound()) return;
+ unlockAudio();
+ ok ? whistle() : fart();
+}
+
+
+
+
+
+
+function begin(){
+ playStartSound();
+ saveNames();
+ names={kind:$("kind").value||currentPlayer,vriend1:$("vriend1").value||"Vriend 1",vriend2:$("vriend2").value||"Vriend 2",familie:$("familie").value||"Oma",teacher:($("teacherRole").value||"Juf")+" "+($("teacherName").value||"Anna")};
+ tables=getTables();questions=makeQuestions();idx=0;good=0;bad=0;streak=0;bestStreak=0;wrongThisSession={};encouragedAt={};paused=false;gameOverTriggered=false;startTime=Date.now();
+ $("start").classList.add("hide");$("rules").classList.add("hide");$("history").classList.add("hide");$("game").classList.remove("hide");$("tot").textContent=questions.length;
+ $("tijd").textContent=MAX_GAME_SECONDS;
+if($("timerBar")){
+  $("timerBar").classList.remove("warning");
+  $("timerBar").style.width="100%";
+}
+$("tijd").classList.remove("timeWarning");
+window._last30Triggered=false;
+
+timer=setInterval(()=>{
+ if(!paused){
+   let elapsed=Math.floor((Date.now()-startTime)/1000);
+   let remaining=Math.max(0,MAX_GAME_SECONDS-elapsed);
+
+   $("tijd").textContent=remaining;
+
+   if($("timerBar")){
+     let pct=(remaining/MAX_GAME_SECONDS)*100;
+     $("timerBar").style.width=pct+"%";
+   }
+
+   if(remaining<=30){
+     $("tijd").classList.add("timeWarning");
+     if($("timerBar")) $("timerBar").classList.add("warning");
+
+     if(!window._last30Triggered){
+       window._last30Triggered=true;
+       playWarningSound();
+     }
+   }
+
+   if(remaining<=0){
+     gameOverByTime();
+   }
+ }
+},1000);
+ show();
+}
+
+
+function updateStats(){
+ if($("goed")) $("goed").textContent=good;
+ if($("fout")) $("fout").textContent=bad;
+ if($("streak")) $("streak").textContent=streak;
+ updateNinja();
+}
+
+
+function launchConfetti(){
+ let box=$("confetti");
+ if(!box) return;
+ box.innerHTML="";
+ for(let i=0;i<45;i++){
+   let s=document.createElement("span");
+   s.textContent=["⭐","🎉","🏆","🥷"][Math.floor(Math.random()*4)];
+   s.style.left=Math.random()*100+"%";
+   s.style.animationDelay=Math.random()*.4+"s";
+   box.appendChild(s);
+ }
+ setTimeout(()=>box.innerHTML="",1700);
+}
+
+function goodMsg(t){
+ let fb=$("feedback");
+ if(fb){
+   fb.className="feedback good pop";
+   fb.textContent=t;
+ }
+ try{ if(typeof playGoodSound==="function") playGoodSound(); }catch(e){}
+}
+
+function badMsg(t){
+ let fb=$("feedback");
+ if(fb){
+   fb.className="feedback bad shake";
+   fb.textContent=t;
+ }
+ try{ if(typeof playWrongSound==="function") playWrongSound(); }catch(e){}
+}
+
+function handleAnswer(v){
+ if(paused) return;
+ let q=questions[idx];
+ paused=true;
+ document.querySelectorAll(".option").forEach(o=>o.classList.add("disabled"));
+ try{
+   if(v===q.answer){
+     correct("Goed! ⭐",850);
+   }else{
+     addWeak(q.table);
+     wrong("Niet goed. Het goede antwoord is "+q.answer+" ("+q.show+").",true);
+   }
+ }catch(e){
+   var box=document.getElementById("appError");
+   if(box){box.textContent="App-fout v103: "+e.message;box.classList.remove("hide");}
+   console.error(e);
+ }
+}
+
+function correct(msg,delay){
+ good++;
+ streak++;
+ bestStreak=Math.max(bestStreak,streak);
+ goodMsg(msg);
+ updateStats();
+ setTimeout(next,delay);
+}
+
+function wrong(msg,moveNext){
+ bad++;
+ streak=0;
+ badMsg(msg);
+ updateStats();
+ if(moveNext)setTimeout(next,2200);
+}
+
+function show(){
+ paused=false;
+ if($("feedback")){
+   $("feedback").textContent="";
+   $("feedback").className="feedback";
+ }
+ if($("nr")) $("nr").textContent=idx+1;
+ updateStats();
+ let q=questions[idx];
+ if(!q){ end(); return; }
+ $("titel").textContent=q.title;
+ $("vraag").textContent=q.text;
+ renderChoices(q);
+}
+
+function renderChoices(q){
+ let correct=q.answer, distractors=[];
+ if(q.qKind==="recognize" || (q.title && q.title.includes("Herken de tafel"))){
+   let pool=[1,2,3,4,5,6,7,8,9,10,11,12];
+   distractors=shuffle(pool.filter(x=>x!==correct)).slice(0,6);
+ }else if(q.qKind==="sequence" || (q.title && q.title.includes("Maak de reeks af"))){
+   let t=Number(q.table)||1;
+   let candidates=[correct-t,correct+t,correct+(2*t),correct-(2*t),correct+1,correct-1,correct+2,correct-2,correct+3,correct-3].filter(x=>x>0&&x!==correct);
+   distractors=shuffle([...new Set(candidates)]).slice(0,6);
+ }else{
+   distractors=[correct+q.table,correct-q.table,correct+2*q.table,correct-2*q.table,correct+1,correct-1,correct+10,correct-10].filter(x=>x>0&&x!==correct);
+ }
+ let all=shuffle([...new Set([correct].concat(distractors))]).slice(0,4);
+ if(!all.includes(correct)) all[0]=correct;
+ all=shuffle(all);
+ $("choices").innerHTML="";
+ all.forEach(v=>{
+   let d=document.createElement("div");
+   d.className="option";
+   d.textContent=v;
+   d.onclick=()=>handleAnswer(v);
+   $("choices").appendChild(d);
+ });
+}
+
+
+$("encourageBtn").onclick=function(){paused=false;$("encourageOverlay").classList.add("hide");show()}
+
+function maybeEncourage(){
+  // v71: stabiel gemaakt. Geen tussenscherm meer dat de antwoord-flow kan onderbreken.
+  return false;
+}
+
+function next(){
+ idx++;
+ if(idx>=questions.length){
+   end();
+   return;
+ }
+ show();
+}
+
+
+
+function gameOverByTime(){
+ if(gameOverTriggered) return;
+ gameOverTriggered=true;
+ if(timer){clearInterval(timer);timer=null}
+ bad += Math.max(0, questions.length - idx);
+ paused=true;
+ $("game").classList.add("hide");
+ $("end").classList.remove("hide");
+ $("progress").style.width="100%";
+ updateNinja();
+ let sec=MAX_GAME_SECONDS;
+ let s=0;
+ saveSession({date:new Date().toLocaleString("nl-NL"),dateISO:new Date().toISOString(),mode:getMode()==="single"?"Oefenen":"Challenge",challengeLevel:getMode()==="challenge"?$("challengeLevel").value:"",tables:tables,good:good,bad:bad,total:questions.length,errorPct:100,time:sec,score:s,award:"⏰ Game over",subscriptionAfter:subscriptionLevel(),weak:Object.keys(wrongThisSession)});
+ $("endText").textContent="⏰ Tijd is op! De missie is gestopt na 240 seconden.";
+ $("endGoed").textContent=good;
+ $("endFout").textContent=bad;
+ $("endTijd").textContent=sec;
+ $("endScore").textContent=s;
+ $("endBadge").textContent="⏰ Game over — probeer het nog eens!";
+ $("weakText").innerHTML=endWeekMissionHtml();
+ $("keepText").textContent="Tijd is op. Probeer de missie nog een keer.";
+ try{ if(typeof buzzerSound==="function") buzzerSound(); else fart(); }catch(e){}
+}
+
+function endWeekMissionHtml(){
+ let g=weekCounts();
+ let complete=(safeNum(g.singleGood)>=3 && safeNum(g.challengeGood)>=1);
+ return "<div class='missionRows endMissionRows'>"+
+   "<div class='missionRow'><span class='checkBox "+(safeNum(g.challengeGood)>=1?"done":"")+"'>"+(safeNum(g.challengeGood)>=1?"✓":"")+"</span><span>1 wedstrijd afgerond met een beker of medaille</span><b>"+Math.min(safeNum(g.challengeGood),1)+"/1</b></div>"+
+   "<div class='missionRow'><span class='checkBox "+(safeNum(g.singleGood)>=3?"done":"")+"'>"+(safeNum(g.singleGood)>=3?"✓":"")+"</span><span>3 losse tafels oefenen</span><b>"+Math.min(safeNum(g.singleGood),3)+"/3</b></div>"+
+   "<div class='missionRow statusLine'><span>Je hebt nog tot:</span><b>"+weekDeadlineText()+"</b></div>"+
+   "<button class='weekSuccessBtn "+(complete?"show":"")+"'>✅ Geslaagd!</button>"+
+ "</div>";
+}
+
+function end(){
+ clearInterval(timer);
+
+ let elapsed=Math.min(MAX_GAME_SECONDS,Math.floor((Date.now()-startTime)/1000));
+ let visibleRemaining=Number($("tijd") && $("tijd").textContent ? $("tijd").textContent : NaN);
+ let remaining=Number.isFinite(visibleRemaining) ? Math.max(0,visibleRemaining) : Math.max(0,MAX_GAME_SECONDS-elapsed);
+
+ let s=score(remaining);
+ let award=sessionAward(bad,questions.length);
+ let mode=getMode();
+ let challengeLevel=mode==="challenge"?$("challengeLevel").value:"";
+ let currentSub=subscriptionLevel();
+ let newSub=currentSub;
+ let subMessage="";
+
+ if(s>hs())set(selectedKey(),String(s));
+
+ if(mode==="challenge"){
+   newSub=applyChallengeStatus(currentSub,challengeLevel,award);
+   setSubscriptionLevel(newSub);
+
+   if(isMedal(award)){
+     if(levelIndex(newSub)>levelIndex(currentSub)){
+       subMessage="Gewonnen! Je bent nu "+newSub+" Ninja.";
+       launchConfetti();
+       setTimeout(launchConfetti,550);
+     }else{
+       subMessage="Mooie wedstrijd. Je Ninja-status blijft "+newSub+".";
+     }
+   }else{
+     subMessage="Geen medaille of beker. Je zakt terug naar "+newSub+".";
+   }
+ }
+
+ saveSession({
+   date:new Date().toLocaleString("nl-NL"),
+   dateISO:new Date().toISOString(),
+   mode:mode==="single"?"Oefenen":"Challenge",
+   challengeLevel:challengeLevel,
+   tables:tables,
+   good:good,
+   bad:bad,
+   total:questions.length,
+   errorPct:Math.round((bad/Math.max(1,questions.length))*100),
+   time:remaining,
+   elapsedTime:elapsed,
+   score:s,
+   award:award,
+   subscriptionAfter:subscriptionLevel(),
+   weak:Object.keys(wrongThisSession)
+ });
+
+ $("game").classList.add("hide");
+ $("end").classList.remove("hide");
+ $("progress").style.width="100%";
+ updateNinja();
+
+ $("endText").textContent=names.kind+", wat goed dat je weer hebt geoefend!! Tot de volgende keer 🎉";
+ $("endGoed").textContent=good;
+ $("endFout").textContent=bad;
+ $("endTijd").textContent=remaining;
+ $("endScore").textContent=s;
+ $("endBadge").textContent=award+" — Ninja-status: "+subscriptionLevel();
+
+ $("weakText").innerHTML=endWeekMissionHtml();
+ $("keepText").textContent="";
+ if(mode==="challenge"){
+   $("keepText").textContent=subMessage+" Score = resterende tijd ("+remaining+"s) - fouten ("+(bad*10)+").";
+ }else{
+   $("keepText").textContent="Score = resterende tijd ("+remaining+"s) - fouten ("+(bad*10)+").";
+ }
+}
+
+function renderChallengeStats(arr){
+ let ch=arr.filter(s=>s.mode==="Challenge");
+ if(!ch.length){$("challengeStats").innerHTML="Nog geen Ninja-statuswedstrijden gespeeld.";return}
+ $("challengeStats").innerHTML=ch.map(s=>
+   "<div class='session cleanSession'>"+
+   "<b>"+s.date+"</b><br>"+
+   "<b>"+s.challengeLevel+" wedstrijd</b><br>"+
+   s.award+" | ✅ "+s.good+" | ❌ "+s.bad+"/"+s.total+" ("+s.errorPct+"%) | ⏱️ "+s.time+"s | ⭐ "+s.score+
+   "<br><span class='note'>Ninja-status na sessie: "+s.subscriptionAfter+"</span>"+
+   "</div>"
+ ).join("");
+}
+function renderTableStats(arr){
+ let perTable={};
+ arr.filter(s=>s.mode==="Oefenen"&&(s.tables||[]).length===1).forEach(s=>{
+   let t=s.tables[0];
+   if(!perTable[t])perTable[t]=[];
+   perTable[t].push(s);
+ });
+ let rows="";
+ for(let t=1;t<=12;t++){
+   let list=perTable[t]||[];
+   if(list.length){
+     let played=list.length;
+     let totalScore=list.reduce((a,s)=>a+Number(s.score||0),0);
+     let best=Math.max(...list.map(s=>Number(s.score||0)));
+     let badSum=list.reduce((a,s)=>a+Number(s.bad||0),0);
+     let goodSum=list.reduce((a,s)=>a+Number(s.good||0),0);
+     let medals=list.filter(s=>isMedal(s.award)).length;
+     let avg=Math.round(totalScore/played);
+     let recent=list.slice(0,3).map(s=>
+       "<div class='tableSession'><b>"+s.date+"</b><span>"+s.award+" · ✅ "+s.good+" · ❌ "+s.bad+"/"+s.total+" · ⭐ "+s.score+"</span></div>"
+     ).join("");
+     rows+="<div class='tableCard'><div><b>Tafel "+t+"</b><span>Los geoefend: "+played+"× · 🏅/🏆 "+medals+"×</span></div><div class='tableScore'>Beste "+best+" · Gem. "+avg+"</div><small>Totaal: ✅ "+goodSum+" · ❌ "+badSum+"</small><div class='tableSessions'>"+recent+"</div></div>";
+   }else{
+     rows+="<div class='tableCard'><div><b>Tafel "+t+"</b><span>Nog niet los geoefend</span></div><button class='light' onclick='startSingleTable("+t+")'>Start tafel "+t+"</button></div>";
+   }
+ }
+ $("tableStats").innerHTML=rows;
+}
+
+function weekMissionHtml(){
+ let g=weekCounts();
+ let complete=(safeNum(g.singleGood)>=3 && safeNum(g.challengeGood)>=1);
+ return "<h2>🥷 Weekmissie</h2>"+
+  "<div class='missionRows'>"+
+    "<div class='missionRow'><span class='checkBox "+(safeNum(g.challengeGood)>=1?"done":"")+"'>"+(safeNum(g.challengeGood)>=1?"✓":"")+"</span><span>1 wedstrijd afgerond met een beker of medaille</span><b>"+Math.min(safeNum(g.challengeGood),1)+"/1</b></div>"+
+    "<div class='missionRow'><span class='checkBox "+(safeNum(g.singleGood)>=3?"done":"")+"'>"+(safeNum(g.singleGood)>=3?"✓":"")+"</span><span>3 losse tafels oefenen</span><b>"+Math.min(safeNum(g.singleGood),3)+"/3</b></div>"+
+    "<div class='missionRow statusLine'><span>Je hebt nog tot:</span><b>"+weekDeadlineText()+"</b></div>"+
+    "<button class='weekSuccessBtn "+(complete?"show":"")+"'>✅ Geslaagd!</button>"+
+  "</div>";
+}
+
+function showHistory(){
+ ["start","game","end","rules","login"].forEach(id=>$(id).classList.add("hide"));
+ $("history").classList.remove("hide");showBottomNav(true);setBottomActive("stats");
+ $("historyPlayer").textContent=currentPlayer;
+
+ let arr=sessions(),sub=subscriptionLevel(),g=weeklyGoalStats();
+
+ $("subStatus").innerHTML=weekMissionHtml();
+
+ $("currentBadge").innerHTML=
+  "<div class='statusHeroBadge'><div class='statusHeroIcon'>"+rankEmoji(sub)+"</div><div><h2>"+sub+" Ninja</h2><p>Deze prijzenkast is alleen van "+currentPlayer+".</p></div></div>";
+
+ renderChallengeStats(arr);
+ renderTableStats(arr);
+ $("sessionList").innerHTML=arr.length?arr.map(s=>"<div class='session cleanSession'><b>"+s.date+"</b><br>"+s.mode+(s.challengeLevel?" "+s.challengeLevel:"")+" — "+s.tables.map(t=>'tafel '+t).join(', ')+"<br>"+s.award+" | ✅ "+s.good+" | ❌ "+s.bad+"/"+s.total+" | ⏱️ "+s.time+"s | ⭐ "+s.score+"</div>").join(""):"Nog geen sessies gespeeld.";
+}
+function showRules(from="start"){returnAfterRules=from;["start","game","end","history","login"].forEach(id=>$(id).classList.add("hide"));$("rules").classList.remove("hide")}
+function goBackFromRules(){returnAfterRules==="login"?showLogin():goHome()}
+window.goBackFromRules=goBackFromRules;
+
+function showBottomNav(show){let nav=$("bottomNav");if(nav)nav.classList.toggle("hide",!show)}
+function setBottomActive(tab){document.querySelectorAll("#bottomNav button").forEach(b=>b.classList.toggle("active",b.dataset.tab===tab))}
+function bottomNavGo(tab){
+ setBottomActive(tab);
+ if(tab==="home"){goHome();return}
+ if(tab==="stats"){showHistory();return}
+ if(tab==="wedstrijd"){document.querySelector('input[name="mode"][value="challenge"]').checked=true;updateStart();goHome();return}
+ if(tab==="training"){document.querySelector('input[name="mode"][value="single"]').checked=true;updateStart();goHome();return}
+ if(tab==="profiel"){goHome();setTimeout(()=>{try{document.querySelector("#start .card.shop:first-of-type").scrollIntoView({behavior:"smooth",block:"start"})}catch(e){}},50);return}
+}
+
+function showLogin(){showBottomNav(false);["start","game","end","history","rules"].forEach(id=>$(id).classList.add("hide"));$("login").classList.remove("hide");renderPlayers()}
+function goHome(){if(timer){clearInterval(timer);timer=null}paused=false;["game","end","history","rules","login","encourageOverlay","managePlayersModal","newPlayerModal","pinModal"].forEach(id=>$(id).classList.add("hide"));$("start").classList.remove("hide");updateStart()}
+window.goHome=goHome;
+function startSingleTable(t){document.querySelector('input[name="mode"][value="single"]').checked=true;$("singleTable").value=String(t);updateStart();$("history").classList.add("hide");begin()}
+window.startSingleTable=startSingleTable;
+
+function showManagePlayers(){
+ let code=prompt("Admincode nodig:");
+ if(code!=="Joost01"){alert("Onjuiste admincode.");return}
+ renderManagePlayers();
+ if($("managePlayersModal")) $("managePlayersModal").classList.remove("hide");
+}
+function renderManagePlayers(){
+ if(!$("managePlayersList")) return;
+ let p=players();
+ if(!p.length){
+   $("managePlayersList").innerHTML="<div class='session'>Geen spelers.</div>";
+   return;
+ }
+ $("managePlayersList").innerHTML=p.map(x=>{
+   let name=(x && x.name ? x.name : "Speler").toString();
+   return "<div class='session'><b>"+name+"</b><br><button class='danger small deletePlayerBtn' data-name='"+encodeURIComponent(name)+"'>Verwijder speler</button></div>";
+ }).join("");
+ document.querySelectorAll(".deletePlayerBtn").forEach(btn=>{
+   btn.addEventListener("click",()=>deletePlayer(decodeURIComponent(btn.dataset.name)));
+ });
+}
+async function deletePlayer(name){
+ if(!confirm("Speler '"+name+"' verwijderen? Alle scores en sessies verdwijnen."))return;
+ try{ await fsDeletePlayer(name); }catch(e){ console.warn("Cloud delete failed",e); }
+ remotePlayersCache=remotePlayersCache.filter(p=>p.name!==name);
+ Object.keys(localStorage).forEach(k=>{if(k.startsWith("tn_"+name+"_"))localStorage.removeItem(k)});
+ if(getRaw(baseKey("currentPlayer"))===name)localStorage.removeItem(baseKey("currentPlayer"));
+ renderManagePlayers();
+ renderPlayers();
+}
+
+async function resetAll(){
+ let code=prompt("Admincode nodig om te resetten:");
+ if(code!=="Joost01"){alert("Onjuiste admincode.");return}
+ if(!confirm("Weet je zeker dat je alle gegevens van "+currentPlayer+" wilt wissen?"))return;
+ let savedNames=get("names");
+ Object.keys(localStorage).forEach(k=>{if(k.startsWith("tn_"+currentPlayer+"_"))localStorage.removeItem(k)});
+ if(savedNames)set("names",savedNames);
+ try{
+   await fsSetPlayer(currentPlayer,{
+     data:{
+       subscription:"Starter",
+       sessions:"[]",
+       names:savedNames||JSON.stringify({kind:currentPlayer,vriend1:"Sam",vriend2:"Noor",familie:"Oma",teacherRole:"Juf",teacherName:"Anna"}),
+       weak_tables:"{}"
+     },
+     updatedAt:serverNow()
+   },true);
+ }catch(e){console.warn("Cloud reset failed",e)}
+ location.reload();
+}
+
+
+
+
+
+
+
+
+if($("welcomeLayer")) $("welcomeLayer").addEventListener("click", dismissWelcomeLayer);
+if($("welcomeImage")) $("welcomeImage").addEventListener("click", function(e){e.preventDefault();e.stopPropagation();dismissWelcomeLayer();});
+if($("welcomeCloseBtn")) $("welcomeCloseBtn").onclick=dismissWelcomeLayer;
+if($("welcomeStartBtn")) $("welcomeStartBtn").onclick=dismissWelcomeLayer;
+
+if($("managePlayersBtn")) $("managePlayersBtn").onclick=showManagePlayers;
+if($("manageCloseBtn")) $("manageCloseBtn").onclick=function(){$("managePlayersModal").classList.add("hide")};
+$("showNewPlayerBtn").onclick=function(){
+ $("newName").value="";
+ $("newPin").value="";
+ if($("newPlayerError")) $("newPlayerError").textContent="";
+ $("newPlayerModal").classList.remove("hide");
+ setTimeout(()=>$("newName").focus(),50);
+}
+$("newPlayerCancelBtn").onclick=function(){$("newPlayerModal").classList.add("hide")}
+if($("createPlayerBtn")) $("createPlayerBtn").onclick=createPlayer;
+$("newName").onkeydown=e=>{if(e.key==="Enter")$("newPin").focus()};
+if($("newPin")) $("newPin").onkeydown=e=>{if(e.key==="Enter")createPlayer()};
+$("pinCancelBtn").onclick=function(){$("pinModal").classList.add("hide")}
+$("pinOkBtn").onclick=function(){
+ let p=playerByName(pendingPlayer),pin=$("pinInput").value;
+ if(!p||pin!==p.pin){alert("Verkeerde code.");return}
+ $("pinModal").classList.add("hide");openPlayer(p.name);
+}
+$("pinInput").onkeydown=e=>{if(e.key==="Enter")$("pinOkBtn").click()}
+$("switchPlayerBtn").onclick=showLogin;
+document.querySelectorAll('input[name="mode"]').forEach(r=>r.onchange=updateStart);
+$("singleTable").onchange=updateStart;$("challengeLevel").onchange=updateStart;
+if($("soundToggle")) $("soundToggle").onclick=toggleSound;
+updateSoundIcon();
+$("startBtn").onclick=begin;$("historyBtn").onclick=showHistory;if($("quickStartBtn")) $("quickStartBtn").onclick=begin; if($("quickHistoryBtn")) $("quickHistoryBtn").onclick=showHistory;$("endHistoryBtn").onclick=showHistory;$("rulesBtn").onclick=()=>showRules("start");$("rulesFromLoginBtn").onclick=()=>showRules("login");if($("backBtn")) if($("backBtn")) if($("backBtn")) if($("backBtn")) $("backBtn").onclick=goHome;$("resetBtn").onclick=resetAll;
+
+document.addEventListener("pointerdown", primeAudioFromGesture, {capture:true, passive:true});
+document.addEventListener("touchstart", primeAudioFromGesture, {capture:true, passive:true});
+document.addEventListener("touchend", primeAudioFromGesture, {capture:true, passive:true});
+document.addEventListener("click", primeAudioFromGesture, {capture:true, passive:true});
+
+
+document.addEventListener("touchstart", function(){ try{unlockAudio()}catch(e){} }, {once:true, passive:true});
+document.addEventListener("click", function(){ try{unlockAudio()}catch(e){} }, {once:true});
+
+
+if($("playerSearch")){
+ $("playerSearch").addEventListener("input", renderPlayers);
+}
+
+document.querySelectorAll("#bottomNav button").forEach(btn=>btn.addEventListener("click",()=>bottomNavGo(btn.dataset.tab)));
+startCloudListener();
+})();
+</script>
+</body>
+</html>
